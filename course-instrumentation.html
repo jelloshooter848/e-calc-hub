@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instrumentation Course - ETASV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header -->
+    <header class="etasv-gradient-bg text-white">
+        <div class="container mx-auto px-4 py-6">
+            <!-- Navigation -->
+            <div class="flex items-center justify-between mb-6">
+                <a href="journeyman-courses.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to Courses</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">Instrumentation</h1>
+                <p class="text-lg text-blue-100 max-w-2xl mx-auto">
+                    Master industrial measurement and control systems with EPRI evaluation
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Course Overview -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="flex items-center mb-6">
+                <div class="bg-orange-100 rounded-lg p-3 mr-4">
+                    <svg class="w-8 h-8 text-orange-600" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-bold text-etasv-navy">Course Overview</h2>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-etasv-gray text-lg mb-4">
+                    Class begins with an introduction to the basics of instrumentation, including definition of commonly used instrumentation terms and symbols, and an overview of the physical parameters of industrial measurement and control; pressure, flow, level, and temperature.
+                </p>
+                <p class="text-etasv-gray text-lg mb-4">
+                    Covers complex material such as; configuration and calibration, including proper documentation. Both bench calibration of analog instruments and communicating with and configuring digital or "smart" instruments are covered in great detail.
+                </p>
+                <p class="text-etasv-gray text-lg">
+                    The class finishes with fundamental of automated process control, control valves and control valve maintenance, analytical instrumentation, and instrument installation and tubing. The class concludes with the testing and evaluation process, monitored by the Electric Power Research Institute (EPRI), provides a formal, independent assessment of the knowledge and skills of Journeyman Wiremen.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-etasv-light rounded-lg p-4">
+                    <h3 class="font-semibold text-etasv-navy mb-2">Training Type</h3>
+                    <p class="text-etasv-gray">Theory & Hands-on Practice</p>
+                </div>
+                <div class="bg-etasv-light rounded-lg p-4">
+                    <h3 class="font-semibold text-etasv-navy mb-2">Evaluation</h3>
+                    <p class="text-etasv-gray">EPRI Monitored Assessment</p>
+                </div>
+                <div class="bg-etasv-light rounded-lg p-4">
+                    <h3 class="font-semibold text-etasv-navy mb-2">Prerequisites</h3>
+                    <p class="text-etasv-gray">Journey-level Inside Wiremen Only</p>
+                </div>
+                <div class="bg-etasv-light rounded-lg p-4">
+                    <h3 class="font-semibold text-etasv-navy mb-2">Status</h3>
+                    <span class="inline-flex items-center bg-green-100 text-green-800 text-sm font-medium px-2.5 py-0.5 rounded">
+                        Available Now
+                    </span>
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            <strong>EPRI Evaluation:</strong> This course includes formal testing and evaluation monitored by the Electric Power Research Institute (EPRI) for independent assessment of Journeyman Wiremen knowledge and skills.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- What You'll Learn -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-etasv-navy mb-6">What You'll Learn</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-etasv-navy mb-3">Instrumentation Fundamentals</h3>
+                    <ul class="space-y-2 text-etasv-gray">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Instrumentation terms and symbols
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Physical parameters (pressure, flow, level, temperature)
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Industrial measurement and control basics
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-etasv-navy mb-3">Advanced Topics</h3>
+                    <ul class="space-y-2 text-etasv-gray">
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Configuration and calibration techniques
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Digital and smart instrument communication
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Automated process control fundamentals
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Control valves and maintenance
+                        </li>
+                        <li class="flex items-start">
+                            <svg class="w-4 h-4 mr-2 text-etasv-blue mt-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Instrument installation and tubing
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Registration Information -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-etasv-navy mb-6">Registration Information</h2>
+            
+            <div class="space-y-6">
+                <div class="border-l-4 border-etasv-blue pl-4">
+                    <h3 class="text-lg font-semibold text-etasv-navy mb-2">How to Register</h3>
+                    <ul class="space-y-2 text-etasv-gray">
+                        <li class="flex items-start">
+                            <span class="text-etasv-blue mr-2">1.</span>
+                            Contact ETASV at <strong>(408) 453-1022</strong> to check course availability
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-etasv-blue mr-2">2.</span>
+                            Email <strong>kim@etasv.org</strong> with your registration request
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-etasv-blue mr-2">3.</span>
+                            Submit the completed class interest form for scheduling updates
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-etasv-blue mr-2">4.</span>
+                            Provide proof of journey-level electrician status
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="border-l-4 border-green-500 pl-4">
+                    <h3 class="text-lg font-semibold text-etasv-navy mb-2">What You'll Need</h3>
+                    <ul class="space-y-2 text-etasv-gray">
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Valid journey-level electrician license
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Safety equipment for hands-on training
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Note-taking materials
+                        </li>
+                        <li class="flex items-center">
+                            <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+                            </svg>
+                            Calculator for technical calculations
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Actions -->
+        <section class="bg-white rounded-2xl shadow-lg p-8">
+            <h2 class="text-2xl font-bold text-etasv-navy mb-6 text-center">Ready to Register?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <a href="tel:4084531022" class="flex flex-col items-center bg-etasv-blue text-white p-6 rounded-lg hover:bg-etasv-navy transition-colors">
+                    <svg class="w-8 h-8 mb-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                    </svg>
+                    <span class="font-semibold">Call Now</span>
+                    <span class="text-sm">(408) 453-1022</span>
+                </a>
+                
+                <a href="mailto:kim@etasv.org?subject=Instrumentation Course Registration&body=I would like to register for the Instrumentation course. Please provide me with available dates and registration information." class="flex flex-col items-center bg-etasv-blue text-white p-6 rounded-lg hover:bg-etasv-navy transition-colors">
+                    <svg class="w-8 h-8 mb-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                    </svg>
+                    <span class="font-semibold">Email</span>
+                    <span class="text-sm">kim@etasv.org</span>
+                </a>
+                
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8uR0XKV9YLl5NnN7uzEZy1FXQfQO1_gXuFFQtgYZgqkw1zA/viewform" target="_blank" class="flex flex-col items-center bg-etasv-blue text-white p-6 rounded-lg hover:bg-etasv-navy transition-colors">
+                    <svg class="w-8 h-8 mb-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"/>
+                    </svg>
+                    <span class="font-semibold">Interest Form</span>
+                    <span class="text-sm">Submit Request</span>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

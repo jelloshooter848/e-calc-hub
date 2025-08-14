@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journeyman Upgrade Classes - ETASV App Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+        .etasv-icon-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+        }
+        .course-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .course-card:hover {
+            transform: translateY(-2px);
+            border-left-color: #3B82F6;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header -->
+    <header class="etasv-gradient-bg text-white">
+        <div class="container mx-auto px-4 py-6">
+            <!-- Navigation -->
+            <div class="flex items-center justify-between mb-6">
+                <a href="index.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to App Hub</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">Journeyman Upgrade Classes</h1>
+                <p class="text-lg text-blue-100 max-w-2xl mx-auto">
+                    Advance your skills with specialized continuing education courses designed for licensed journeymen.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8 pb-20 md:pb-8">
+        <!-- Course Categories -->
+        <section class="mb-12">
+            <!-- Solar Training -->
+            <div class="mb-10">
+                <div class="flex items-center mb-6">
+                    <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-etasv-navy">Solar & Renewable Energy</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">California Solar Training and Certification (CALSTaC)®</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            To certify journey-level inside wiremen in the specific competencies required for the safe and accurate installation of Solar/PV systems.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                CA State Certification
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                                </svg>
+                                Journey-level Electricians Only
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Hands-on Installation Training
+                            </div>
+                        </div>
+                        <a href="course-calstac.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">Photovoltaic Systems</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            Learn how solar cells convert the sun's energy directly into electricity. Covers proper installation methods and cost-effectiveness analysis.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                </svg>
+                                Textbook: James P. Dunlop ($61)
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                                </svg>
+                                On-site Demo Installation
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Theory & Practical Application
+                            </div>
+                        </div>
+                        <a href="course-photovoltaic.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Safety Training -->
+            <div class="mb-10">
+                <div class="flex items-center mb-6">
+                    <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-etasv-navy">Safety & OSHA Training</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">NFPA 70E Workplace Safety</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4 text-sm">
+                            Addresses electrical safety requirements for employee workplaces. Covers shock, electrocution, arc flash, and arc blast prevention.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                NFPA 70E Standard
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                </svg>
+                                Arc Flash Safety
+                            </div>
+                        </div>
+                        <a href="course-nfpa70e.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">OSHA 30</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4 text-sm">
+                            30-hour course covering electrical hazards, fall protection, materials handling, cranes, excavations, confined spaces, and more.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                </svg>
+                                30 Hours Training
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                OSHA Card Included
+                            </div>
+                        </div>
+                        <a href="course-osha30.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">OSHA 10</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4 text-sm">
+                            10-Hour Construction Safety Course providing construction workers and supervisors with tools to manage worksite safety and health.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                </svg>
+                                10 Hours Training
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                DOL Completion Card
+                            </div>
+                        </div>
+                        <a href="course-osha10.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Specialties -->
+            <div class="mb-10">
+                <div class="flex items-center mb-6">
+                    <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl font-bold text-etasv-navy">Technical Specialties</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">Instrumentation</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            Basics of industrial measurement and control: pressure, flow, level, temperature. Includes EPRI certification exam preparation.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                EPRI Certification Available
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Hands-on Calibration
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                </svg>
+                                Process Control Systems
+                            </div>
+                        </div>
+                        <a href="course-instrumentation.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">Motor Controls</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            Systematic approach to motor control equipment, theory, installation, maintenance, and troubleshooting methods.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Installation & Maintenance
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                Troubleshooting Methods
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                </svg>
+                                Control Circuit Theory
+                            </div>
+                        </div>
+                        <a href="course-motorcontrols.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">HVAC</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            Basic fundamentals of how HVAC works and electronic HVAC controls. Learn air conditioning systems and control processes.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                                </svg>
+                                Electronic Controls
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                                </svg>
+                                On-site Equipment Demo
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                System Fundamentals
+                            </div>
+                        </div>
+                        <a href="course-hvac.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+
+                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                        <div class="flex items-start justify-between mb-4">
+                            <h3 class="text-xl font-semibold text-etasv-navy">Fire Alarm Course</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                        </div>
+                        <p class="text-etasv-gray mb-4">
+                            NEC Article 760 and NFPA 72 compliance. Installation, testing, troubleshooting with hands-on lab work.
+                        </p>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                </svg>
+                                NEC 760 & NFPA 72
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Hands-on Install & Testing
+                            </div>
+                            <div class="flex items-center text-sm text-etasv-gray">
+                                <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                System Integration
+                            </div>
+                        </div>
+                        <a href="course-firealarm.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                            Register Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Continuing Education Show All Button -->
+            <div class="text-center mb-10">
+                <button onclick="toggleMoreCourses()" id="showMoreBtn" class="bg-etasv-light text-etasv-blue px-6 py-3 rounded-lg hover:bg-etasv-blue hover:text-white transition-colors font-medium">
+                    Show More Courses
+                </button>
+            </div>
+
+            <!-- Additional Courses (Initially Hidden) -->
+            <div id="moreCourses" class="hidden">
+                <!-- Professional Development -->
+                <div class="mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-etasv-navy">Professional Development</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Foreman's Development Series</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4">
+                                16 three-hour modules where foremen participate in an action learning atmosphere focused on industry "best practices" for construction marketplace competitiveness.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                                    </svg>
+                                    16 Modules (48 Hours)
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    Action Learning Environment
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                    Leadership Training
+                                </div>
+                            </div>
+                            <a href="course-foremandevelopment.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Software & Technology -->
+                <div class="mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-etasv-navy">Software & Technology</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Bluebeam - Intro to Design</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                11-week class (32 hours) covering digital design and 2D detailing with BlueBeam Revu. Intermediate class requiring previous BlueBeam experience.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                                    </svg>
+                                    Tuesday/Thursday (32 Hours)
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                    Electrical Design Theory
+                                </div>
+                            </div>
+                            <a href="course-bluebeam-design.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Bluebeam - Fundamentals</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                9-week class delivering instruction on navigation, interface, and creating effective visual communication tools for electrical field and construction.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    Introductory to Advanced
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                    Effective Redlines
+                                </div>
+                            </div>
+                            <a href="course-bluebeam-fundamentals.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Microsoft Office 365 Intensive</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                10-class course (40 hours) covering Word, Excel, Outlook, PowerPoint, Teams, and Planner. Tuesday & Thursday 10:00am-2:00pm.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                                    </svg>
+                                    40 Hours (10 Classes)
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                                    </svg>
+                                    All Microsoft Suite
+                                </div>
+                            </div>
+                            <a href="course-microsoft365.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Fiber Optic Training (FOA)</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                Prepare for CFOT certification exam. Combination of in-class learning and hands-on sessions. Up to 32 CEUs available.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    CFOT Certification
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                    33 Continuing Education Hours
+                                </div>
+                            </div>
+                            <a href="course-fiberoptic.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipe Bending & Installation -->
+                <div class="mb-10">
+                    <div class="flex items-center mb-6">
+                        <div class="etasv-icon-bg rounded-lg p-2 mr-3">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-etasv-navy">Pipe Bending & Installation</h2>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Pipe Bending - Hand Bending</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                24-hour course over 4 consecutive Saturdays covering bender components, math/trigonometry, and various bending techniques.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                                    </svg>
+                                    4 Saturdays (24 Hours)
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                    </svg>
+                                    Offsets & Saddles
+                                </div>
+                            </div>
+                            <a href="course-handbending.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">Pipe Bending - Mechanical/Table</h3>
+                                <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
+                            </div>
+                            <p class="text-etasv-gray mb-4 text-sm">
+                                12-hour course over 2 Saturdays covering machine components, safety, charting, and basic bends including concentric 90's.
+                            </p>
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
+                                    </svg>
+                                    2 Saturdays (12 Hours)
+                                </div>
+                                <div class="flex items-center text-sm text-etasv-gray">
+                                    <svg class="w-4 h-4 mr-2 text-etasv-blue" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                                    </svg>
+                                    Machine Safety & Setup
+                                </div>
+                            </div>
+                            <a href="course-mechanicalbending.html" class="block w-full bg-etasv-blue text-white py-2 px-4 rounded-lg hover:bg-etasv-navy transition-colors text-center">
+                                Register Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Information -->
+        <section class="bg-white rounded-2xl shadow-lg p-8">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold text-etasv-navy mb-3">Course Information</h2>
+                <p class="text-etasv-gray mb-4">Have questions about our journeyman upgrade classes?</p>
+                
+                <!-- Class Interest Form CTA -->
+                <div class="bg-etasv-light rounded-lg p-4 mb-6">
+                    <h3 class="text-lg font-semibold text-etasv-navy mb-2">Request a Class</h3>
+                    <p class="text-etasv-gray text-sm mb-4">Interested in a specific course? Let us know what training you need.</p>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSc8uR0XKV9YLl5NnN7uzEZy1FXQfQO1_gXuFFQtgYZgqkw1zA/viewform" 
+                       target="_blank" 
+                       class="inline-flex items-center bg-etasv-blue text-white px-6 py-3 rounded-lg hover:bg-etasv-navy transition-colors font-medium">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                        Submit Class Interest Form
+                        <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="etasv-icon-bg rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-1">Phone</h3>
+                    <p class="text-etasv-gray text-sm">(408) 453-1022</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="etasv-icon-bg rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-1">Email</h3>
+                    <p class="text-etasv-gray text-sm">kim@etasv.org</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="etasv-icon-bg rounded-full w-12 h-12 flex items-center justify-center mx-auto mb-3">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-1">Location</h3>
+                    <p class="text-etasv-gray text-sm">1873 Barber Lane<br>Milpitas, CA 95035</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="index.html" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span class="text-xs">Hub</span>
+            </a>
+            <button class="flex flex-col items-center text-etasv-blue">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span class="text-xs">Courses</span>
+            </button>
+            <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs">Call</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Journeyman Courses page loaded');
+            
+            // Add smooth scrolling for better mobile experience
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        function toggleMoreCourses() {
+            const moreCourses = document.getElementById('moreCourses');
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            
+            if (moreCourses.classList.contains('hidden')) {
+                moreCourses.classList.remove('hidden');
+                showMoreBtn.textContent = 'Show Fewer Courses';
+            } else {
+                moreCourses.classList.add('hidden');
+                showMoreBtn.textContent = 'Show More Courses';
+                // Scroll back to the button for better UX
+                showMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+    </script>
+</body>
+</html>
