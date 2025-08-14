@@ -87,19 +87,23 @@
         <section class="mb-12">
             <!-- Solar Training -->
             <div class="mb-10">
-                <div class="flex items-center mb-6">
+                <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('solar-category')">
                     <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1z"/>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-etasv-navy">Solar & Renewable Energy</h2>
+                    <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Solar & Renewable Energy</h2>
+                    <svg id="solar-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                    </svg>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                    <div class="course-card bg-white rounded-lg shadow-lg p-6">
-                        <div class="flex items-start justify-between mb-4">
-                            <h3 class="text-xl font-semibold text-etasv-navy">California Solar Training and Certification (CALSTaC)®</h3>
+                <div id="solar-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                            <div class="flex items-start justify-between mb-4">
+                                <h3 class="text-xl font-semibold text-etasv-navy">California Solar Training and Certification (CALSTaC)®</h3>
                             <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
                         </div>
                         <p class="text-etasv-gray mb-4">
@@ -162,21 +166,26 @@
                             Register Now
                         </a>
                     </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Safety Training -->
             <div class="mb-10">
-                <div class="flex items-center mb-6">
+                <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('safety-category')">
                     <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-etasv-navy">Safety & OSHA Training</h2>
+                    <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Safety & OSHA Training</h2>
+                    <svg id="safety-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                    </svg>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div id="safety-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <div class="course-card bg-white rounded-lg shadow-lg p-6">
                         <div class="flex items-start justify-between mb-4">
                             <h3 class="text-xl font-semibold text-etasv-navy">NFPA 70E Workplace Safety</h3>
@@ -257,21 +266,26 @@
                             Register Now
                         </a>
                     </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Technical Specialties -->
             <div class="mb-10">
-                <div class="flex items-center mb-6">
+                <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('technical-category')">
                     <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-etasv-navy">Technical Specialties</h2>
+                    <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Technical Specialties</h2>
+                    <svg id="technical-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                    </svg>
                 </div>
                 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div id="technical-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                     <div class="course-card bg-white rounded-lg shadow-lg p-6">
                         <div class="flex items-start justify-between mb-4">
                             <h3 class="text-xl font-semibold text-etasv-navy">Instrumentation</h3>
@@ -403,33 +417,31 @@
                             Register Now
                         </a>
                     </div>
+                    </div>
                 </div>
             </div>
 
             <!-- Continuing Education Show All Button -->
-            <div class="text-center mb-10">
-                <button onclick="toggleMoreCourses()" id="showMoreBtn" class="bg-etasv-light text-etasv-blue px-6 py-3 rounded-lg hover:bg-etasv-blue hover:text-white transition-colors font-medium">
-                    Show More Courses
-                </button>
-            </div>
-
-            <!-- Additional Courses (Initially Hidden) -->
-            <div id="moreCourses" class="hidden">
-                <!-- Professional Development -->
+            <!-- Additional Courses (Now Always Visible) -->
+                <!-- Leadership Development -->
                 <div class="mb-10">
-                    <div class="flex items-center mb-6">
+                    <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('professional-category')">
                         <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-etasv-navy">Professional Development</h2>
+                        <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Leadership Development</h2>
+                        <svg id="professional-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                        </svg>
                     </div>
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <h3 class="text-xl font-semibold text-etasv-navy">Foreman's Development Series</h3>
+                    <div id="professional-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-xl font-semibold text-etasv-navy">Foreman's Development Series</h3>
                                 <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
                             </div>
                             <p class="text-etasv-gray mb-4">
@@ -459,24 +471,29 @@
                                 Register Now
                             </a>
                         </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Software & Technology -->
                 <div class="mb-10">
-                    <div class="flex items-center mb-6">
+                    <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('software-category')">
                         <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-etasv-navy">Software & Technology</h2>
+                        <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Software & Technology</h2>
+                        <svg id="software-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                        </svg>
                     </div>
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <h3 class="text-xl font-semibold text-etasv-navy">Bluebeam - Intro to Design</h3>
+                    <div id="software-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-xl font-semibold text-etasv-navy">Bluebeam - Intro to Design</h3>
                                 <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
                             </div>
                             <p class="text-etasv-gray mb-4 text-sm">
@@ -581,24 +598,29 @@
                                 Register Now
                             </a>
                         </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Pipe Bending & Installation -->
                 <div class="mb-10">
-                    <div class="flex items-center mb-6">
+                    <div class="flex items-center mb-6 cursor-pointer hover:bg-etasv-light rounded-lg p-2 -ml-2 transition-colors" onclick="toggleCategory('pipebending-category')">
                         <div class="etasv-icon-bg rounded-lg p-2 mr-3">
                             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                             </svg>
                         </div>
-                        <h2 class="text-2xl font-bold text-etasv-navy">Pipe Bending & Installation</h2>
+                        <h2 class="text-2xl font-bold text-etasv-navy flex-grow">Pipe Bending & Installation</h2>
+                        <svg id="pipebending-category-icon" class="w-5 h-5 text-etasv-gray transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                        </svg>
                     </div>
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                        <div class="course-card bg-white rounded-lg shadow-lg p-6">
-                            <div class="flex items-start justify-between mb-4">
-                                <h3 class="text-xl font-semibold text-etasv-navy">Pipe Bending - Hand Bending</h3>
+                    <div id="pipebending-category" class="category-content transition-all duration-300 overflow-hidden hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="course-card bg-white rounded-lg shadow-lg p-6">
+                                <div class="flex items-start justify-between mb-4">
+                                    <h3 class="text-xl font-semibold text-etasv-navy">Pipe Bending - Hand Bending</h3>
                                 <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Available</span>
                             </div>
                             <p class="text-etasv-gray mb-4 text-sm">
@@ -649,9 +671,9 @@
                                 Register Now
                             </a>
                         </div>
+                        </div>
                     </div>
                 </div>
-            </div>
         </section>
 
         <!-- Contact & Information -->
@@ -753,20 +775,32 @@
             });
         });
 
-        function toggleMoreCourses() {
-            const moreCourses = document.getElementById('moreCourses');
-            const showMoreBtn = document.getElementById('showMoreBtn');
+        // Category collapse/expand functionality
+        function toggleCategory(categoryId) {
+            const categoryContent = document.getElementById(categoryId);
+            const categoryIcon = document.getElementById(categoryId + '-icon');
             
-            if (moreCourses.classList.contains('hidden')) {
-                moreCourses.classList.remove('hidden');
-                showMoreBtn.textContent = 'Show Fewer Courses';
+            if (categoryContent.classList.contains('hidden')) {
+                categoryContent.classList.remove('hidden');
+                categoryIcon.style.transform = 'rotate(0deg)';
             } else {
-                moreCourses.classList.add('hidden');
-                showMoreBtn.textContent = 'Show More Courses';
-                // Scroll back to the button for better UX
-                showMoreBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                categoryContent.classList.add('hidden');
+                categoryIcon.style.transform = 'rotate(-90deg)';
             }
         }
+
+        // Initialize all categories as collapsed
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryIds = ['solar-category', 'safety-category', 'technical-category', 'professional-category', 'software-category', 'pipebending-category'];
+            
+            categoryIds.forEach(function(categoryId) {
+                const categoryIcon = document.getElementById(categoryId + '-icon');
+                if (categoryIcon) {
+                    categoryIcon.style.transform = 'rotate(-90deg)';
+                }
+            });
+        });
+
     </script>
 </body>
 </html>
