@@ -1,13 +1,28 @@
-const CACHE_NAME = 'etasv-training-hub-v1';
+const CACHE_NAME = 'etasv-training-hub-v2';
 const urlsToCache = [
   '/',
   '/index.html',
   '/journeyman-courses.html',
+  '/calculators.html',
   '/course-bluebeam-fundamentals.html',
   '/course-bluebeam-design.html',
   '/course-hvac.html',
   '/course-foremandevelopment.html',
+  '/course-firealarm.html',
+  '/course-fiberoptic.html',
+  '/course-mechanicalbending.html',
+  '/course-handbending.html',
+  '/course-microsoft365.html',
+  '/course-motorcontrols.html',
+  '/course-instrumentation.html',
+  '/course-osha10.html',
+  '/course-osha30.html',
+  '/course-nfpa70e.html',
+  '/course-photovoltaic.html',
+  '/course-calstac.html',
   '/photos/etasv_logo.png',
+  '/manifest.json',
+  '/browserconfig.xml',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 ];
@@ -52,6 +67,37 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   // Skip non-GET requests
   if (event.request.method !== 'GET') {
+    return;
+  }
+
+  // Handle navigation requests (when user navigates to a new page)
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            console.log('Service Worker: Serving navigation from cache', event.request.url);
+            return response;
+          }
+          
+          // If not in cache, fetch from network but ensure it stays in PWA context
+          return fetch(event.request)
+            .then(response => {
+              if (response && response.status === 200) {
+                // Cache successful navigation responses
+                const responseToCache = response.clone();
+                caches.open(CACHE_NAME).then(cache => {
+                  cache.put(event.request, responseToCache);
+                });
+              }
+              return response;
+            })
+            .catch(() => {
+              // Return cached index.html for failed navigation (PWA shell)
+              return caches.match('/index.html');
+            });
+        })
+    );
     return;
   }
 

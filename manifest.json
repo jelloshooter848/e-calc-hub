@@ -8,6 +8,8 @@
   "theme_color": "#1E3A8A",
   "orientation": "portrait-primary",
   "scope": "/",
+  "navigation_scope": "/",
+  "display_override": ["standalone", "minimal-ui"],
   "categories": ["education", "training", "electrical"],
   "lang": "en",
   "dir": "ltr",

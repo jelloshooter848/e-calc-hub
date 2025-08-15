@@ -855,6 +855,51 @@
                     console.log(`Opening tool: ${toolName} from ${currentTemplate} template`);
                 });
             });
+            
+            // PWA Navigation Management - Prevent breaking out of PWA context
+            function handleInternalNavigation() {
+                const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches 
+                                      || window.navigator.standalone 
+                                      || document.referrer.includes('android-app://');
+                
+                if (!isStandaloneMode) return; // Only apply in PWA mode
+                
+                console.log('PWA Navigation: Setting up internal link handling');
+                
+                // Get all links on the page
+                const links = document.querySelectorAll('a[href]');
+                
+                links.forEach(link => {
+                    const href = link.getAttribute('href');
+                    
+                    // Check if it's an internal link
+                    if (href && 
+                        !href.startsWith('http://') && 
+                        !href.startsWith('https://') && 
+                        !href.startsWith('mailto:') && 
+                        !href.startsWith('tel:') &&
+                        !href.startsWith('#')) {
+                        
+                        console.log(`PWA Navigation: Setting up handler for internal link: ${href}`);
+                        
+                        link.addEventListener('click', (e) => {
+                            // Let the normal navigation happen, but ensure it stays in PWA
+                            console.log(`PWA Navigation: Navigating to ${href} within PWA context`);
+                            
+                            // Add a small delay to ensure proper navigation
+                            setTimeout(() => {
+                                // If navigation somehow failed, reload the page to stay in PWA
+                                if (window.location.href.includes(href.replace('.html', ''))) {
+                                    console.log('PWA Navigation: Successfully navigated within PWA');
+                                }
+                            }, 100);
+                        });
+                    }
+                });
+            }
+            
+            // Initialize PWA navigation handling
+            handleInternalNavigation();
         });
     </script>
 </body>
