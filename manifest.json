@@ -1,7 +1,7 @@
 {
-  "name": "ETASV Training Hub",
-  "short_name": "ETASV",
-  "description": "Electrical Training Alliance of Silicon Valley - Course Registration and Training Hub",
+  "name": "Electrical Training Alliance of Silicon Valley",
+  "short_name": "ETA",
+  "description": "IBEW-NECA Electrical Training Alliance of Silicon Valley - Professional electrical training and certification",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#1E3A8A",
