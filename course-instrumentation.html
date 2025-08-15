@@ -3,7 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instrumentation Course - ETASV</title>
+    <title>Instrumentation Course - ETASV Training Hub</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Industrial measurement and control systems with EPRI evaluation">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-192x192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -27,14 +47,77 @@
         .etasv-gradient-bg {
             background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
         }
+        .etasv-icon-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+        }
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+        
+        /* Fixed header styles for app-like experience */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Extend past notch/safe area */
+            padding-top: env(safe-area-inset-top);
+            margin-top: calc(-1 * env(safe-area-inset-top));
+        }
+        
+        /* Header content container with proper safe area padding */
+        .header-content {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* Add padding to body to account for fixed header */
+        .main-content {
+            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+            }
+        }
+        
+        /* PWA-specific enhancements for notched devices */
+        @media (display-mode: standalone) {
+            .fixed-header {
+                /* Ensure header fills entire top area including notch */
+                top: 0;
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Prevent content from appearing in safe areas */
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen">
     <!-- Header -->
-    <header class="etasv-gradient-bg text-white">
-        <div class="container mx-auto px-4 py-6">
+    <header class="etasv-gradient-bg text-white fixed-header">
+        <div class="container mx-auto px-4 py-4 header-content">
             <!-- Navigation -->
-            <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center justify-between mb-3">
                 <a href="journeyman-courses.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
@@ -46,16 +129,19 @@
             </div>
             
             <div class="text-center">
-                <h1 class="text-3xl md:text-4xl font-bold mb-3">Instrumentation</h1>
-                <p class="text-lg text-blue-100 max-w-2xl mx-auto">
-                    Master industrial measurement and control systems with EPRI evaluation
-                </p>
+                <h1 class="text-2xl md:text-3xl font-bold">Instrumentation</h1>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 pb-20 md:pb-8 main-content">
+        <!-- Page Description -->
+        <section class="text-center mb-8 mt-16 bg-blue-50 p-6 rounded-lg">
+            <p class="text-xl font-medium text-etasv-navy max-w-2xl mx-auto">
+                Master industrial measurement and control systems with EPRI evaluation
+            </p>
+        </section>
         <!-- Course Overview -->
         <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
             <div class="flex items-center mb-6">
@@ -273,5 +359,43 @@
             </div>
         </section>
     </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="index.html" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span class="text-xs">Hub</span>
+            </a>
+            <button class="flex flex-col items-center text-etasv-blue">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span class="text-xs">Tech</span>
+            </button>
+            <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs">Call</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Instrumentation course page loaded');
+            
+            // Force scroll to top to ensure description is visible
+            window.scrollTo(0, 0);
+            
+            // Also try after a short delay to override any other scroll behavior
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+    </script>
 </body>
 </html>
