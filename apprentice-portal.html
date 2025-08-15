@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apprentice Portal - ETASV Training Hub</title>
+    <title>TradeSchool Portal - ETASV Training Hub</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="ETASV Training Hub">
@@ -133,7 +133,7 @@
             </div>
             
             <div class="text-center">
-                <h1 class="text-2xl md:text-3xl font-bold">Apprentice Portal</h1>
+                <h1 class="text-2xl md:text-3xl font-bold">TradeSchool App</h1>
             </div>
         </div>
     </header>
@@ -143,7 +143,7 @@
         <!-- Page Description -->
         <section class="text-center mb-8 mt-16 bg-blue-50 p-6 rounded-lg">
             <p class="text-xl font-medium text-etasv-navy max-w-2xl mx-auto">
-                Access your training schedule, grades, assignments, and apprenticeship progress tracking
+                Access your OJT "bluebook", certifications, personal info, and apprenticeship progress.
             </p>
         </section>
         
@@ -157,8 +157,7 @@
                     </svg>
                 </div>
                 
-                <h2 class="text-2xl font-bold text-etasv-navy mb-4">Opening Apprentice Portal</h2>
-                <p class="text-etasv-gray mb-6">Portal will open in your default browser in <span id="countdown" class="countdown font-bold text-etasv-blue">3</span> seconds.</p>
+                <h2 class="text-2xl font-bold text-etasv-navy mb-4">TradeSchool App</h2>
                 
                 <div class="space-y-4">
                     <button onclick="openExternal()" 
@@ -166,13 +165,10 @@
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
-                        Open Portal Now
+                        Open TradeSchool Now
                     </button>
                     
-                    <button onclick="cancelRedirect()" 
-                            class="block mx-auto text-etasv-gray hover:text-etasv-navy transition-colors">
-                        Cancel and stay in app
-                    </button>
+
                 </div>
             </div>
         </section>
@@ -184,9 +180,9 @@
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
                 </svg>
                 <div>
-                    <h3 class="font-semibold text-blue-900 mb-2">External Browser Required</h3>
+                    <h3 class="font-semibold text-blue-900 mb-2">Redirecting to External Website</h3>
                     <p class="text-blue-800 text-sm">
-                        Apprentice Portal requires opening in your default browser for full functionality and security. You can return to the ETASV app anytime.
+                        The TradeSchool Portal requires opening in an external website for full functionality and security. You can return to the ETASV app anytime.
                     </p>
                 </div>
             </div>
@@ -219,11 +215,8 @@
     </nav>
 
     <script>
-        let countdownActive = true;
-        let secondsLeft = 3;
-        
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('Apprentice Portal redirect page loaded');
+            console.log('TradeSchool App portal page loaded');
             
             // Force scroll to top to ensure description is visible
             window.scrollTo(0, 0);
@@ -232,41 +225,11 @@
             setTimeout(() => {
                 window.scrollTo(0, 0);
             }, 100);
-            
-            // Start countdown and auto-redirect
-            startCountdown();
         });
-        
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            
-            const timer = setInterval(() => {
-                if (!countdownActive) {
-                    clearInterval(timer);
-                    return;
-                }
-                
-                secondsLeft--;
-                countdownElement.textContent = secondsLeft;
-                
-                if (secondsLeft <= 0) {
-                    clearInterval(timer);
-                    if (countdownActive) {
-                        openExternal();
-                    }
-                }
-            }, 1000);
-        }
         
         function openExternal() {
             // Open in default browser (external to PWA)
             window.open('https://secure.tradeschoolinc.com/v5/ejatc332-org/login/index.php', '_blank');
-        }
-        
-        function cancelRedirect() {
-            countdownActive = false;
-            const countdownElement = document.getElementById('countdown');
-            countdownElement.textContent = 'Cancelled';
         }
     </script>
 </body>
