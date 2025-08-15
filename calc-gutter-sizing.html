@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auxiliary Gutter Sizing Calculator - ETASV Training Hub</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Size auxiliary gutters and surface wireways per NEC Article 366 conductor fill requirements">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-192x192.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+        .etasv-icon-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+        }
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+        
+        /* Fixed header styles for app-like experience */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Extend past notch/safe area */
+            padding-top: env(safe-area-inset-top);
+            margin-top: calc(-1 * env(safe-area-inset-top));
+        }
+        
+        /* Header content container with proper safe area padding */
+        .header-content {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* Add padding to body to account for fixed header */
+        .main-content {
+            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
+            min-height: calc(100vh - 100px);
+            padding-bottom: 80px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+            }
+        }
+        
+        /* PWA-specific enhancements for notched devices */
+        @media (display-mode: standalone) {
+            .fixed-header {
+                /* Ensure header fills entire top area including notch */
+                top: 0;
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Prevent content from appearing in safe areas */
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* Calculator styling tweaks for ETASV branding */
+        .calc-btn-primary {
+            background-color: #1E3A8A;
+        }
+        .calc-btn-primary:hover {
+            background-color: #1E293B;
+        }
+        .calc-btn-secondary {
+            background-color: #059669;
+        }
+        .calc-btn-secondary:hover {
+            background-color: #047857;
+        }
+        .calc-btn-danger {
+            background-color: #DC2626;
+        }
+        .calc-btn-danger:hover {
+            background-color: #B91C1C;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Header -->
+    <header class="etasv-gradient-bg text-white fixed-header">
+        <div class="container mx-auto px-4 py-4 header-content">
+            <div class="flex items-center justify-between mb-3">
+                <a href="calculators.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to Calculators</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-2xl md:text-3xl font-bold">Auxiliary Gutter Sizing Calculator</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content flex flex-col items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl">
+            <h1 class="text-2xl font-bold text-center mb-4">Auxiliary Gutter & Wireway Sizing Calculator</h1>
+            <p class="text-gray-600 text-center mb-6">Enter conductor details to calculate the minimum gutter/wireway size per NEC requirements.</p>
+
+            <div id="conductorInputs" class="space-y-4">
+                <div class="conductor-entry grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 border rounded">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Conductor Size (AWG/kcmil)</label>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="16">16 AWG</option>
+                            <option value="14">14 AWG</option>
+                            <option value="12">12 AWG</option>
+                            <option value="10">10 AWG</option>
+                            <option value="8">8 AWG</option>
+                            <option value="6">6 AWG</option>
+                            <option value="4">4 AWG</option>
+                            <option value="3">3 AWG</option>
+                            <option value="2">2 AWG</option>
+                            <option value="1">1 AWG</option>
+                            <option value="1/0">1/0 AWG</option>
+                            <option value="2/0">2/0 AWG</option>
+                            <option value="3/0">3/0 AWG</option>
+                            <option value="4/0">4/0 AWG</option>
+                            <option value="250">250 kcmil</option>
+                            <option value="300">300 kcmil</option>
+                            <option value="350">350 kcmil</option>
+                            <option value="400">400 kcmil</option>
+                            <option value="500">500 kcmil</option>
+                            <option value="600">600 kcmil</option>
+                            <option value="700">700 kcmil</option>
+                            <option value="750">750 kcmil</option>
+                            <option value="800">800 kcmil</option>
+                            <option value="900">900 kcmil</option>
+                            <option value="1000">1000 kcmil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" min="1" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="removeConductor(this)" class="w-full calc-btn-danger text-white py-2 px-4 rounded hover:bg-red-600">Remove</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between mt-4">
+                <button onclick="addConductor()" class="calc-btn-primary text-white py-2 px-4 rounded hover:bg-blue-600">Add Conductor</button>
+                <div class="flex gap-4">
+                    <button onclick="resetCalculator()" class="calc-btn-danger text-white py-2 px-4 rounded hover:bg-red-600">Reset</button>
+                    <button onclick="calculateSize()" class="calc-btn-secondary text-white py-2 px-4 rounded hover:bg-green-600">Calculate</button>
+                </div>
+            </div>
+
+            <div id="results" class="mt-6 hidden">
+                <div class="flex items-center mb-4">
+                    <h2 class="text-xl font-semibold">Results:&nbsp;</h2>
+                    <h2 id="recommendedSize" class="text-xl font-semibold text-green-600">4 x 4 inches</h2>
+                </div>
+                <p id="totalArea" class="text-gray-700">Total Conductor Area: 2.88 sq in</p>
+                <p id="minCrossSection" class="text-gray-700">Minimum Cross-Sectional Area (20% fill): 14.40 sq in</p>
+                <p id="minBendingSpace" class="text-gray-700">Minimum Bending Space: 1.5 inches</p>
+            </div>
+
+            <div id="sizeWarning" class="mt-4 p-4 bg-red-100 border border-red-400 rounded-lg hidden">
+                <div class="flex items-start">
+                    <span class="text-red-600 font-bold text-lg mr-2">⚠️</span>
+                    <div>
+                        <h3 class="text-red-800 font-semibold">Warning: Custom Size Required</h3>
+                        <p class="text-red-700 mt-1">Required size exceeds 24x24 inches. This will likely require a custom built enclosure that exceeds the minimum cross-sectional area shown above.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-sm text-gray-500 mt-4">
+                <p>Notes:</p>
+                <ul class="list-disc pl-5">
+                    <li>16 AWG conductors are based on TFN insulated conductors.</li>
+                    <li>14 AWG - 1000 kcmil conductors are based on THHN or THWN insulated conductors.</li>
+                    <li>If more than 30 current-carrying conductors are present, they must be derated per NEC 310.15.</li>
+                    <li>Splices and taps must be accessible and cannot take up more than 75% of the cross-sectional volume of the gutter or wireway per NEC 366.56/376.56.</li>
+                </ul>
+            </div>
+            
+            <div class="text-xs text-gray-400 mt-4 p-3 border border-gray-300 rounded bg-gray-50">
+                <p class="font-semibold mb-2">DISCLAIMER:</p>
+                <p style="font-size: 11px;">Calculations are based on NEC 366.22 (20% fill) and 312.6(A) for bending space. Always perform due diligence and verify calculations are correct for your specific application. This calculator is not to be used in lieu of consultation with a licensed electrician, contractor, electrical engineer, or other qualified professional. Always confirm calculations and specifications with a licensed professional before implementation. We take no liability for incorrect calculations, omissions, or any damages resulting from use of this tool. Local codes and regulations may differ from NEC requirements.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="index.html" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span class="text-xs">Hub</span>
+            </a>
+            <button class="flex flex-col items-center text-etasv-blue">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21 8V7l-3 2-3-2v1l3 2 3-2zM7.5 6.5C7.5 5.12 8.62 4 10 4s2.5 1.12 2.5 2.5S11.38 9 10 9 7.5 7.88 7.5 6.5zM16 4c1.38 0 2.5 1.12 2.5 2.5S17.38 9 16 9s-2.5-1.12-2.5-2.5S14.62 4 16 4zM12 12c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z"/>
+                </svg>
+                <span class="text-xs">Gutter</span>
+            </button>
+            <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs">Call</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Gutter Sizing Calculator loaded');
+            
+            // Force scroll to top to ensure description is visible
+            window.scrollTo(0, 0);
+            
+            // Also try after a short delay to override any other scroll behavior
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+
+        /* CALCULATOR LOGIC - Original functionality preserved */
+        
+        // Conductor area (sq in) per NEC Table 5 (THHN/THWN)
+        const conductorAreas = {
+            '16': 0.0072,
+            '14': 0.0097,
+            '12': 0.0133,
+            '10': 0.0211,
+            '8': 0.03666,
+            '6': 0.0507,
+            '4': 0.0824,
+            '3': 0.0973,
+            '2': 0.1158,
+            '1': 0.1562,
+            '1/0': 0.1855,
+            '2/0': 0.2223,
+            '3/0': 0.2679,
+            '4/0': 0.3237,
+            '250': 0.3970,
+            '300': 0.4608,
+            '350': 0.5242,
+            '400': 0.5863,
+            '500': 0.7073,
+            '600': 0.8676,
+            '700': 0.9887,
+            '750': 1.0496,
+            '800': 1.1085,
+            '900': 1.2311,
+            '1000': 1.3478
+        };
+
+        // Bending space (inches) per NEC Table 312.6(A), 1 wire per terminal
+        const bendingSpace = {
+            '16': 1.5,
+            '14': 1.5,
+            '12': 1.5,
+            '10': 1.5,
+            '8': 1.5,
+            '6': 1.5,
+            '4': 2,
+            '3': 2,
+            '2': 2.5,
+            '1': 3,
+            '1/0': 3.5,
+            '2/0': 3.5,
+            '3/0': 4,
+            '4/0': 4,
+            '250': 4.5,
+            '300': 5,
+            '350': 5,
+            '400': 6,
+            '500': 6,
+            '600': 8,
+            '700': 8,
+            '750': 8,
+            '800': 8,
+            '900': 8,
+            '1000': 10
+        };
+
+        function addConductor() {
+            const template = document.querySelector('.conductor-entry').cloneNode(true);
+            template.querySelector('input').value = '1';
+            document.getElementById('conductorInputs').appendChild(template);
+        }
+
+        function removeConductor(button) {
+            const entries = document.querySelectorAll('.conductor-entry');
+            if (entries.length > 1) {
+                button.closest('.conductor-entry').remove();
+            }
+        }
+
+        function calculateSize() {
+            let totalArea = 0;
+            let maxBendingSpace = 0;
+
+            const entries = document.querySelectorAll('.conductor-entry');
+            entries.forEach(entry => {
+                const size = entry.querySelector('select').value;
+                const quantity = parseInt(entry.querySelector('input').value) || 0;
+                totalArea += conductorAreas[size] * quantity;
+                if (bendingSpace[size] > maxBendingSpace) {
+                    maxBendingSpace = bendingSpace[size];
+                }
+            });
+
+            // 20% fill rule (NEC 366.22)
+            const minCrossSection = totalArea / 0.2;
+            const minDimension = Math.ceil(Math.sqrt(minCrossSection));
+
+            // Minimum dimensions considering bending space
+            const minSize = Math.max(minDimension, maxBendingSpace);
+
+            // Find standard size (e.g., 4x4, 6x6, 8x8, 10x10, 12x12, 16x16, 20x20, 24x24)
+            const standardSizes = [4, 6, 8, 10, 12, 16, 20, 24];
+            let recommendedSize = standardSizes.find(size => size >= minSize) || 24;
+
+            // Display results
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.classList.remove('hidden');
+            document.getElementById('totalArea').textContent = `Total Conductor Area: ${totalArea} sq in`;
+            document.getElementById('minCrossSection').textContent = `Minimum Cross-Sectional Area (20% fill): ${minCrossSection.toFixed(2)} sq in`;
+            document.getElementById('minBendingSpace').textContent = `Minimum Bending Space: ${maxBendingSpace} inches`;
+
+            // Update recommended size text and warning
+            const warningDiv = document.getElementById('sizeWarning');
+            if (minSize > 24) {
+                document.getElementById('recommendedSize').textContent = `>24" custom size required`;
+                warningDiv.classList.remove('hidden');
+            } else {
+                document.getElementById('recommendedSize').textContent = `${recommendedSize}x${recommendedSize} minimum gutter size recommended`;
+                warningDiv.classList.add('hidden');
+            }
+        }
+
+        // Reset calculator function
+        function resetCalculator() {
+            // Reset to single conductor row with default values matching the original HTML structure
+            const conductorsDiv = document.getElementById('conductorInputs');
+            conductorsDiv.innerHTML = `
+                <div class="conductor-entry grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 border rounded">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Conductor Size (AWG/kcmil)</label>
+                        <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <option value="16" selected>16 AWG</option>
+                            <option value="14">14 AWG</option>
+                            <option value="12">12 AWG</option>
+                            <option value="10">10 AWG</option>
+                            <option value="8">8 AWG</option>
+                            <option value="6">6 AWG</option>
+                            <option value="4">4 AWG</option>
+                            <option value="3">3 AWG</option>
+                            <option value="2">2 AWG</option>
+                            <option value="1">1 AWG</option>
+                            <option value="1/0">1/0 AWG</option>
+                            <option value="2/0">2/0 AWG</option>
+                            <option value="3/0">3/0 AWG</option>
+                            <option value="4/0">4/0 AWG</option>
+                            <option value="250">250 kcmil</option>
+                            <option value="300">300 kcmil</option>
+                            <option value="350">350 kcmil</option>
+                            <option value="400">400 kcmil</option>
+                            <option value="500">500 kcmil</option>
+                            <option value="600">600 kcmil</option>
+                            <option value="700">700 kcmil</option>
+                            <option value="750">750 kcmil</option>
+                            <option value="800">800 kcmil</option>
+                            <option value="900">900 kcmil</option>
+                            <option value="1000">1000 kcmil</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" min="1" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="removeConductor(this)" class="w-full calc-btn-danger text-white py-2 px-4 rounded hover:bg-red-600">Remove</button>
+                    </div>
+                </div>
+            `;
+            
+            // Hide results section
+            document.getElementById('results').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

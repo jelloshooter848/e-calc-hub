@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduit and Wire Weight Calculator - ETASV Training Hub</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Calculate conduit and wire weights for electrical installations">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="../../manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="../../icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="../../icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="../../icons/icon-192x192.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .column {
+            flex: 1;
+            padding: 10px;
+            min-width: 300px;
+        }
+
+        .column-1 {
+            background-color: #e6f7ff; /* Light blue */
+        }
+
+        .column-2 {
+            background-color: #ffcccc; /* Light coral */
+        }
+
+        .column-3 {
+            background-color: #fffacd; /* Light goldenrod yellow */
+        }
+
+        .nested-container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .nested-column {
+            flex: 1;
+            padding: 10px;
+            min-width: 180px;
+        }
+
+        .nested-column-1 {
+            background-color: #d6f5ff; /* Lighter blue */
+        }
+
+        .nested-column-2 {
+            background-color: #ffefd6; /* Lighter orange */
+        }
+
+        .entry {
+            margin-bottom: 20px;
+        }
+
+        .conduit-entry,
+        .wire-entry {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .conduit-entry > div,
+        .wire-entry > div {
+            flex: 1 1 150px;
+            min-width: 150px;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+
+        .button-container button {
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+
+        #setsContainer {
+            margin-top: 20px;
+        }
+
+        #setsContainer h2 {
+            margin-bottom: 10px;
+        }
+
+        #setsList {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #setsList li {
+            margin-bottom: 10px;
+        }
+
+        #ampacityResultsContainer {
+            margin-top: 20px;
+            display: none; /* Hide by default */
+        }
+
+        header, .footer-column {
+            background-color: #35424a;
+            color: white;
+        }
+
+        .footer-column {
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            margin-top: auto;
+        }
+
+        @media (max-width: 900px) {
+            .column, .footer-column {
+                flex: 100%;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .nested-column {
+                flex: 100%;
+            }
+            .conduit-entry,
+            .wire-entry {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .conduit-entry > div,
+            .wire-entry > div {
+                flex: 1 1 150px;
+                min-width: 150px;
+                margin-right: 0;
+            }
+            .button-container {
+                justify-content: space-between;
+            }
+        }
+        
+        /* ETASV PWA Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+        
+        /* Fixed header styles for app-like experience */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding-top: env(safe-area-inset-top);
+            margin-top: calc(-1 * env(safe-area-inset-top));
+        }
+        
+        .header-content {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* Update main content to account for fixed header */
+        .main-content {
+            padding-top: calc(120px + env(safe-area-inset-top)) !important;
+            padding-bottom: 80px !important;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: calc(100px + env(safe-area-inset-top)) !important;
+            }
+        }
+        
+        /* PWA-specific enhancements for notched devices */
+        @media (display-mode: standalone) {
+            .fixed-header {
+                top: 0;
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+        
+        /* Override original header styling */
+        header {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- ETASV Header -->
+    <header class="etasv-gradient-bg text-white fixed-header">
+        <div class="container mx-auto px-4 py-4 header-content">
+            <div class="flex items-center justify-between mb-3">
+                <a href="../../calculators.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to Calculators</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="../../photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-2xl md:text-3xl font-bold">Conduit and Wire Weight Calculator</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Original header (now hidden) -->
+    <header>
+        <h1>Conduit and Wire Weight Calculator</h1>
+    </header>
+    <div class="container">
+        <div class="main-content">
+            <div class="column column-1">
+                <div class="nested-container">
+                    <div class="nested-column nested-column-1">
+                        <form id="calculatorForm">
+                            <div id="conduitContainer">
+                                <h2>Add Conduit</h2>
+
+                                <div class="checkbox-container" style="display: table; margin-bottom: 5px;">
+                                    <div style="display: table-row;">
+                                        <div style="display: table-cell;">
+                                            <label for="freeAir" style="margin-right: -1px;">Free Air:</label>
+                                        </div>
+                                        <div style="display: table-cell; vertical-align: middle;">
+                                            <input type="checkbox" id="freeAir" style="margin-top: 13px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="entry conduit-entry">
+                                    <div>
+                                        <label for="conduitType1">Conduit Type:</label>
+                                        <select class="conduitType1" id="conduitType1">
+                                            <option value="Western Tube EMT">Western Tube EMT</option>
+                                            <option value="PullEase Aluminum EMT">PullEase Aluminum EMT</option>
+                                            <option value="Western Tube IMC">Western Tube IMC</option>
+                                            <option value="Western Tube RMC">Western Tube RMC</option>
+                                            <option value="Western Tube RAC">Western Tube RAC</option>
+                                            <option value="JM Eagle PVC Schedule 40">JM Eagle PVC Schedule 40</option>
+                                            <option value="JM Eagle PVC Schedule 80">JM Eagle PVC Schedule 80</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="conduitSize1">Conduit Size:</label>
+                                        <select class="conduitSize1" id="conduitSize1">
+                                            <!-- Options will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="conduitLength1">Length of Conduit (ft):</label>
+                                        <input type="number" class="conduitLength1" id="conduitLength1" value="10" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" id="addConduitBtn">Add Conduit</button><br>
+                        </form>
+                    </div>
+                    <div class="nested-column nested-column-2">
+                        <div id="wireContainer">
+                            <h2>Add Wires</h2>
+                            <div class="entry wire-entry">
+                                <div>
+                                    <label for="wireType1">Insulation Type:</label>
+                                    <select class="wireType1" id="wireType1">
+                                        <option value="THWN-2">THWN-2</option>
+                                        <option value="XHHW-2">XHHW-2</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="wireSize1">Wire Size:</label>
+                                    <select class="wireSize1" id="wireSize1">
+                                        <!-- Options will be populated dynamically -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="wireLength1">Length of Wire (ft):</label>
+                                    <input type="number" class="wireLength1" id="wireLength1" value="10" required>
+                                </div>
+                                <div>
+                                    <label for="wireCount1">Number of Wires:</label>
+                                    <input type="number" class="wireCount1" id="wireCount1" value="1" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="button-container">
+                            <button type="button" id="addWireBtn">Add Phase Conductors</button>
+                            <button type="button" id="addNonCccWireBtn">Add Non-CCC</button>
+                            <button type="button" id="addEgcWireBtn">Add EGC</button>
+                            <button type="button" id="addGecWireBtn">Add GEC</button>
+                            <button type="button" id="addGroundedConductorWireBtn">Add Grounded Conductor</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column column-2">
+                <h2>Contents of Your Conduit</h2>
+                <ul id="entryList"></ul>
+
+                <button type="button" id="calculateBtn">Add Conduit To List</button>
+
+                <h2>Conduit and Wire Weight</h2>
+                <p id="totalWeight">0 lbs</p>
+                
+                <h2>Conduit Fill</h2>
+                <p id="wireFill">0%</p>
+
+                <div id="setsContainer">
+                    <h2>Conduit List</h2>
+                    <ul id="setsList"></ul>
+                    <button type="button" id="exportButton">Export List</button>
+                    <button type="button" id="resetButton">Clear List</button>
+                    <h2>Cumulative Weight</h2>
+                    <p id="cumulativeWeight">0 lbs</p>
+                </div>
+
+                <div id="ampacityResultsContainer">
+                    <h2>Ampacity Results</h2>
+                    <label for="tempRatingSelect">Select Temperature Rating:</label>
+                    <select id="tempRatingSelect" class="tempRatingSelect">
+                        <option value="60">60°C</option>
+                        <option value="75" selected>75°C</option>
+                        <option value="90">90°C</option>
+                    </select>
+                    <pre id="ampacityResults"></pre>
+                    <button type="button" id="resetAmpacityButton">Reset Ampacity</button>
+                </div>
+
+                <div id="sbjResultsContainer" style="display:none;">
+                    <h2>SBJ Results</h2>
+                    <p id="sbjResults"></p>
+                    <button id="resetSbjButton">Reset SBJ Results</button>
+                </div>
+            </div>
+        </div>
+        <div class="footer-column">
+            <p>Contact me: ecalc848@gmail.com | <a href="Manual.pdf" target="_blank">User Manual</a></p>
+            <button id="darkModeToggle">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+    <script src="addentries.js"></script>
+    <script src="removeentries.js"></script>
+    <script src="updateCalculations.js"></script>
+    <script src="resetEntries.js"></script>
+    <script src="calculate.js"></script>
+    <script src="ampacity.js"></script>
+    <script src="checkEgc.js"></script>
+    <script src="checkGec.js"></script>
+    <script src="checkSbj.js"></script>
+    <script src="main.js"></script>
+
+    <script>
+        // Add this line in the set item creation part in calculate.js
+        function updateSetItem(setItem, setDetails, totalWeight) {
+            setItem.innerHTML = `Set ${setItem.id.split('-')[1]}:\n${setDetails}Weight - ${totalWeight.toFixed(2)} lbs, Wire Fill - ${document.getElementById('wireFill').innerText} <button onclick="checkAmpacity(${setItem.id.split('-')[1]})">Check Ampacity</button> <button onclick="checkEgc(${setItem.id.split('-')[1]})">Check EGC</button> <button onclick="checkGec(${setItem.id.split('-')[1]})">Check GEC</button> <button onclick="checkSbj(${setItem.id.split('-')[1]})">Check SBJ</button> <button onclick="editSet(${setItem.id.split('-')[1]})">Edit</button> <button onclick="removeSet(${setItem.id.split('-')[1]})">Remove</button>`;
+        }
+
+        // Dark mode toggle script
+        const toggleDarkMode = () => {
+            document.body.classList.toggle('dark-mode');
+        };
+
+        document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+    </script>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="../../index.html" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span class="text-xs">Hub</span>
+            </a>
+            <button class="flex flex-col items-center text-etasv-blue">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zM4 6h16v2H4V6zm0 4h16v2H4v-2zm0 4h16v2H4v-2z"/>
+                </svg>
+                <span class="text-xs">Conduit</span>
+            </button>
+            <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs">Call</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

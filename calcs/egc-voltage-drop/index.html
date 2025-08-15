@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEC 250.122(B) EGC Size Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-4 text-center">EGC Size Calculator (NEC 250.122(B))</h1>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">Conductor Material</label>
+      <select id="conductorMaterial" class="mt-1 block w-full p-2 border rounded">
+        <option value="copper">Copper</option>
+        <option value="aluminum">Aluminum</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">Original Ungrounded Conductor Size</label>
+      <select id="originalConductor" class="mt-1 block w-full p-2 border rounded">
+        <option value="14">14 AWG</option>
+        <option value="12">12 AWG</option>
+        <option value="10">10 AWG</option>
+        <option value="8">8 AWG</option>
+        <option value="6">6 AWG</option>
+        <option value="4">4 AWG</option>
+        <option value="3">3 AWG</option>
+        <option value="2">2 AWG</option>
+        <option value="1">1 AWG</option>
+        <option value="1/0">1/0 AWG</option>
+        <option value="2/0">2/0 AWG</option>
+        <option value="3/0">3/0 AWG</option>
+        <option value="4/0">4/0 AWG</option>
+        <option value="250">250 kcmil</option>
+        <option value="300">300 kcmil</option>
+        <option value="350">350 kcmil</option>
+        <option value="400">400 kcmil</option>
+        <option value="500">500 kcmil</option>
+        <option value="600">600 kcmil</option>
+        <option value="750">750 kcmil</option>
+        <option value="1000">1000 kcmil</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">New Ungrounded Conductor Size</label>
+      <select id="newConductor" class="mt-1 block w-full p-2 border rounded">
+        <option value="14">14 AWG</option>
+        <option value="12">12 AWG</option>
+        <option value="10">10 AWG</option>
+        <option value="8">8 AWG</option>
+        <option value="6">6 AWG</option>
+        <option value="4">4 AWG</option>
+        <option value="3">3 AWG</option>
+        <option value="2">2 AWG</option>
+        <option value="1">1 AWG</option>
+        <option value="1/0">1/0 AWG</option>
+        <option value="2/0">2/0 AWG</option>
+        <option value="3/0">3/0 AWG</option>
+        <option value="4/0">4/0 AWG</option>
+        <option value="250">250 kcmil</option>
+        <option value="300">300 kcmil</option>
+        <option value="350">350 kcmil</option>
+        <option value="400">400 kcmil</option>
+        <option value="500">500 kcmil</option>
+        <option value="600">600 kcmil</option>
+        <option value="750">750 kcmil</option>
+        <option value="1000">1000 kcmil</option>
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700">Original EGC Size</label>
+      <select id="originalEGC" class="mt-1 block w-full p-2 border rounded">
+        <option value="14">14 AWG</option>
+        <option value="12">12 AWG</option>
+        <option value="10">10 AWG</option>
+        <option value="8">8 AWG</option>
+        <option value="6">6 AWG</option>
+        <option value="4">4 AWG</option>
+        <option value="3">3 AWG</option>
+        <option value="2">2 AWG</option>
+        <option value="1">1 AWG</option>
+        <option value="1/0">1/0 AWG</option>
+        <option value="2/0">2/0 AWG</option>
+        <option value="3/0">3/0 AWG</option>
+        <option value="4/0">4/0 AWG</option>
+        <option value="250">250 kcmil</option>
+        <option value="300">300 kcmil</option>
+        <option value="350">350 kcmil</option>
+        <option value="400">400 kcmil</option>
+        <option value="500">500 kcmil</option>
+        <option value="600">600 kcmil</option>
+        <option value="750">750 kcmil</option>
+        <option value="1000">1000 kcmil</option>
+      </select>
+    </div>
+    <button onclick="calculateEGC()" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Calculate</button>
+    <div id="result" class="mt-4 text-center"></div>
+  </div>
+
+  <script>
+    // Circular mil areas from NEC Chapter 9, Table 8
+    const circularMils = {
+      copper: {
+        '14': 4110,
+        '12': 6530,
+        '10': 10380,
+        '8': 16510,
+        '6': 26240,
+        '4': 41740,
+        '3': 52620,
+        '2': 66360,
+        '1': 83690,
+        '1/0': 105600,
+        '2/0': 133100,
+        '3/0': 167800,
+        '4/0': 211600,
+        '250': 250000,
+        '300': 300000,
+        '350': 350000,
+        '400': 400000,
+        '500': 500000,
+        '600': 600000,
+        '750': 750000,
+        '1000': 1000000
+      },
+      aluminum: {
+        '14': 4110,
+        '12': 6530,
+        '10': 10380,
+        '8': 16510,
+        '6': 26240,
+        '4': 41740,
+        '3': 52620,
+        '2': 66360,
+        '1': 83690,
+        '1/0': 105600,
+        '2/0': 133100,
+        '3/0': 167800,
+        '4/0': 211600,
+        '250': 250000,
+        '300': 300000,
+        '350': 350000,
+        '400': 400000,
+        '500': 500000,
+        '600': 600000,
+        '750': 750000,
+        '1000': 1000000
+      }
+    };
+
+    // Standard conductor sizes in ascending order of circular mils
+    const conductorSizes = {
+      copper: [
+        { size: '14', cmil: 4110 },
+        { size: '12', cmil: 6530 },
+        { size: '10', cmil: 10380 },
+        { size: '8', cmil: 16510 },
+        { size: '6', cmil: 26240 },
+        { size: '4', cmil: 41740 },
+        { size: '3', cmil: 52620 },
+        { size: '2', cmil: 66360 },
+        { size: '1', cmil: 83690 },
+        { size: '1/0', cmil: 105600 },
+        { size: '2/0', cmil: 133100 },
+        { size: '3/0', cmil: 167800 },
+        { size: '4/0', cmil: 211600 },
+        { size: '250', cmil: 250000 },
+        { size: '300', cmil: 300000 },
+        { size: '350', cmil: 350000 },
+        { size: '400', cmil: 400000 },
+        { size: '500', cmil: 500000 },
+        { size: '600', cmil: 600000 },
+        { size: '750', cmil: 750000 },
+        { size: '1000', cmil: 1000000 }
+      ],
+      aluminum: [
+        { size: '14', cmil: 4110 },
+        { size: '12', cmil: 6530 },
+        { size: '10', cmil: 10380 },
+        { size: '8', cmil: 16510 },
+        { size: '6', cmil: 26240 },
+        { size: '4', cmil: 41740 },
+        { size: '3', cmil: 52620 },
+        { size: '2', cmil: 66360 },
+        { size: '1', cmil: 83690 },
+        { size: '1/0', cmil: 105600 },
+        { size: '2/0', cmil: 133100 },
+        { size: '3/0', cmil: 167800 },
+        { size: '4/0', cmil: 211600 },
+        { size: '250', cmil: 250000 },
+        { size: '300', cmil: 300000 },
+        { size: '350', cmil: 350000 },
+        { size: '400', cmil: 400000 },
+        { size: '500', cmil: 500000 },
+        { size: '600', cmil: 600000 },
+        { size: '750', cmil: 750000 },
+        { size: '1000', cmil: 1000000 }
+      ]
+    };
+
+    // EGC size mapping based on NEC Table 250.122 and Table 310.16
+    const egcSizeMapping = {
+      copper: {
+        '14': '14', // 15A OCPD
+        '12': '12', // 20A
+        '10': '10', // 30A
+        '8': '10',  // 50A
+        '6': '10',  // 60A
+        '4': '8',   // 80A
+        '3': '8',   // 90A
+        '2': '8',   // 100A
+        '1': '6',   // 125A
+        '1/0': '6', // 150A
+        '2/0': '6', // 175A
+        '3/0': '6', // 200A
+        '4/0': '6', // 225A
+        '250': '6', // 250A
+        '300': '4', // 300A
+        '350': '4', // 350A
+        '400': '3', // 400A
+        '500': '3', // 400A
+        '600': '2', // 500A
+        '750': '2', // 500A
+        '1000': '1' // 600A
+      },
+      aluminum: {
+        '14': '12', // 15A
+        '12': '10', // 20A
+        '10': '8',  // 25A
+        '8': '8',   // 40A
+        '6': '8',   // 50A
+        '4': '6',   // 65A
+        '3': '6',   // 75A
+        '2': '6',   // 90A
+        '1': '4',   // 100A
+        '1/0': '4', // 125A
+        '2/0': '4', // 150A
+        '3/0': '4', // 175A
+        '4/0': '2', // 200A
+        '250': '2', // 225A
+        '300': '2', // 250A
+        '350': '1', // 300A
+        '400': '1', // 350A
+        '500': '1/0', // 400A
+        '600': '2/0', // 500A
+        '750': '3/0', // 600A
+        '1000': '4/0' // 700A
+      }
+    };
+
+    // Update EGC size when material or original conductor changes
+    document.getElementById('conductorMaterial').addEventListener('change', updateEGCSize);
+    document.getElementById('originalConductor').addEventListener('change', updateEGCSize);
+
+    function updateEGCSize() {
+      const material = document.getElementById('conductorMaterial').value;
+      const originalConductor = document.getElementById('originalConductor').value;
+      const originalEGCSelect = document.getElementById('originalEGC');
+
+      // Set default EGC size based on mapping
+      if (egcSizeMapping[material][originalConductor]) {
+        originalEGCSelect.value = egcSizeMapping[material][originalConductor];
+        console.log(`Auto-selected EGC: ${originalEGCSelect.value} for ${material} ${originalConductor}`);
+      } else {
+        originalEGCSelect.value = '14'; // Fallback to smallest size
+        console.log('No mapping found, defaulting to 14 AWG');
+      }
+    }
+
+    function calculateEGC() {
+      const material = document.getElementById('conductorMaterial').value;
+      const originalConductor = document.getElementById('originalConductor').value;
+      const newConductor = document.getElementById('newConductor').value;
+      const originalEGC = document.getElementById('originalEGC').value;
+      const resultDiv = document.getElementById('result');
+
+      console.log("Inputs:", { material, originalConductor, newConductor, originalEGC });
+
+      const originalConductorCmil = circularMils[material][originalConductor];
+      const newConductorCmil = circularMils[material][newConductor];
+      const originalEGCCmil = circularMils[material][originalEGC];
+
+      console.log("Circular Mils:", { originalConductorCmil, newConductorCmil, originalEGCCmil });
+
+      if (!originalConductorCmil || !newConductorCmil || !originalEGCCmil) {
+        resultDiv.innerHTML = '<p class="text-red-500">Invalid conductor size selected.</p>';
+        console.log("Error: Invalid conductor size selected.");
+        return;
+      }
+
+      if (newConductorCmil <= originalConductorCmil) {
+        resultDiv.innerHTML = '<p class="text-red-500">New conductor size must be larger than original conductor size.</p>';
+        console.log("Error: New conductor size must be larger than original conductor size.");
+        return;
+      }
+
+      const ratio = newConductorCmil / originalConductorCmil;
+      const adjustedEGCCmil = originalEGCCmil * ratio;
+
+      console.log("Ratio:", ratio, "Adjusted EGC cmil:", adjustedEGCCmil);
+
+      let adjustedEGCSize = null;
+      for (const conductor of conductorSizes[material]) {
+        if (conductor.cmil >= adjustedEGCCmil) {
+          adjustedEGCSize = conductor.size;
+          break;
+        }
+      }
+
+      if (!adjustedEGCSize) {
+        adjustedEGCSize = conductorSizes[material][conductorSizes[material].length - 1].size;
+      }
+
+      console.log("Adjusted EGC Size:", adjustedEGCSize);
+
+      resultDiv.innerHTML = `<p class="text-green-600">Adjusted EGC Size: ${adjustedEGCSize} AWG/kcmil (${material})</p>`;
+    }
+  </script>
+</body>
+</html>

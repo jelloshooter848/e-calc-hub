@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEC 430 Interpolation App</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 1em;
+      max-width: 100%;
+      padding: 0 0.5em;
+    }
+
+    label {
+      display: block;
+      width: 100%;
+      margin-top: 0.5em;
+      font-size: 1rem;
+    }
+
+    select, input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.5em;
+      font-size: 1rem;
+      box-sizing: border-box;
+      margin-top: 0.3em;
+    }
+
+    button {
+      width: 100%;
+      max-width: 300px;
+      margin: 1em auto;
+      padding: 0.8em 1em;
+      font-size: 1rem;
+      display: block;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 1em;
+      border: 1px solid #ccc;
+      padding: 1em;
+      background: #f9f9f9;
+      font-size: 1rem;
+    }
+
+    .result strong {
+      display: inline-block;
+      width: 100%;
+      margin-bottom: 0.3em;
+    }
+
+    h1, h2 {
+      margin-bottom: 0.4em;
+      font-size: 1.5rem;
+    }
+
+    small {
+      color: #555;
+      font-size: 0.9rem;
+    }
+
+    .note {
+      margin: 1em 0;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .details {
+      font-size: 0.9rem;
+      color: #555;
+      margin-top: 0.5em;
+    }
+
+    @media (min-width: 600px) {
+      body {
+        margin: 2em;
+        max-width: 800px;
+      }
+
+      label {
+        display: inline-block;
+        width: 200px;
+      }
+
+      select, input {
+        width: 160px;
+        max-width: none;
+      }
+
+      button {
+        width: auto;
+        margin-left: 202px;
+        padding: 0.4em 1em;
+      }
+
+      .result strong {
+        width: 180px;
+      }
+
+      h1, h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h1>NEC 430 “Interpolated HP” Calculator</h1>
+  <p>
+    Per <b>NEC 430.6(A)</b>, if a motor is <em>marked in amperes, but not horsepower</em>,
+    we must use <em>Tables 430.247–430.250</em> to find or interpolate
+    an assumed HP.
+  </p>
+
+  <div class="note">
+    <strong>Instructions:</strong>
+    <ol>
+      <li>Select the <em>NEC table</em> relevant to your motor type (single‐phase, DC, etc.).</li>
+      <li>Select the <em>voltage</em> column from that table.</li>
+      <li>Enter the motor’s <em>nameplate amps</em> (when no HP is listed).</li>
+      <li>Click <b>“Calculate HP.”</b> The tool will interpolate if needed.</li>
+    </ol>
+    <p>
+      <small><em>Note:</em> The table values here are from the 2023 NEC.
+      Double‐check your exact code edition. If your amps lie
+      outside the smallest/largest row in the table, this tool
+  will advise consulting the manufacturer or using engineering judgment.</small>
+    </p>
+  </div>
+
+  <label for="tableSelect">NEC Table:</label>
+  <select id="tableSelect" onchange="populateVoltageOptions()">
+    <option value="">-- Select a Table --</option>
+    <option value="430.247">430.247 (DC Motors)</option>
+    <option value="430.248">430.248 (Single-Phase)</option>
+    <option value="430.249">430.249 (2-Phase, 4-Wire)</option>
+    <option value="430.250">430.250 (3-Phase)</option>
+  </select>
+  <br />
+
+  <label for="voltageSelect">Voltage (per table):</label>
+  <select id="voltageSelect">
+    <option value="">-- Select Table First --</option>
+  </select>
+  <br />
+
+  <label for="ampsInput">Nameplate Amps (No HP):</label>
+  <input type="text" id="ampsInput" placeholder="e.g. 48" />
+  <br />
+
+  <button onclick="calculateHP()">Calculate HP</button>
+
+  <div id="results" class="result" style="display:none;">
+    <div><strong>Interpolated HP:</strong> <span id="hpValue"></span></div>
+    <div id="resultDetails" class="details"></div>
+  </div>
+
+  <script>
+    /**********************************************************************
+     *  STEP A: DEFINE THE FULL DATA SET FOR THE FOUR TABLES
+     **********************************************************************/
+    const motorData = {
+      "430.247": {
+        "90": [
+          { hp: 0.25, flc: 4.0 },
+          { hp: 0.33, flc: 5.2 },
+          { hp: 0.5, flc: 6.8 },
+          { hp: 0.75, flc: 9.6 },
+          { hp: 1, flc: 12.2 },
+        ],
+        "120": [
+          { hp: 0.25, flc: 3.1 },
+          { hp: 0.33, flc: 4.1 },
+          { hp: 0.5, flc: 5.4 },
+          { hp: 0.75, flc: 7.6 },
+          { hp: 1, flc: 9.5 },
+          { hp: 1.5, flc: 13.2 },
+          { hp: 2, flc: 17 },
+          { hp: 3, flc: 25 },
+          { hp: 5, flc: 40 },
+          { hp: 7.5, flc: 58 },
+          { hp: 10, flc: 76 },
+        ],
+        "180": [
+          { hp: 0.25, flc: 2.0 },
+          { hp: 0.33, flc: 2.6 },
+          { hp: 0.5, flc: 3.4 },
+          { hp: 0.75, flc: 4.8 },
+          { hp: 1, flc: 6.1 },
+          { hp: 1.5, flc: 8.3 },
+          { hp: 2, flc: 10.8 },
+          { hp: 3, flc: 16.0 },
+          { hp: 5, flc: 27.0 },
+        ],
+        "240": [
+          { hp: 0.25, flc: 1.6 },
+          { hp: 0.33, flc: 2.0 },
+          { hp: 0.5, flc: 2.7 },
+          { hp: 0.75, flc: 3.8 },
+          { hp: 1, flc: 4.7 },
+          { hp: 1.5, flc: 6.6 },
+          { hp: 2, flc: 8.5 },
+          { hp: 3, flc: 12.2 },
+          { hp: 5, flc: 20.0 },
+          { hp: 7.5, flc: 29.0 },
+          { hp: 10, flc: 38.0 },
+          { hp: 15, flc: 55.0 },
+          { hp: 20, flc: 72.0 },
+          { hp: 25, flc: 89.0 },
+          { hp: 30, flc: 106.0 },
+          { hp: 40, flc: 140.0 },
+          { hp: 50, flc: 173.0 },
+          { hp: 60, flc: 206.0 },
+          { hp: 75, flc: 255.0 },
+          { hp: 100, flc: 341.0 },
+          { hp: 125, flc: 425.0 },
+          { hp: 150, flc: 506.0 },
+          { hp: 200, flc: 675.0 },
+        ],
+        "500": [
+          { hp: 7.5, flc: 13.6 },
+          { hp: 10, flc: 18.0 },
+          { hp: 15, flc: 27.0 },
+          { hp: 20, flc: 34.0 },
+          { hp: 25, flc: 43.0 },
+          { hp: 30, flc: 51.0 },
+          { hp: 40, flc: 67.0 },
+          { hp: 50, flc: 83.0 },
+          { hp: 60, flc: 99.0 },
+          { hp: 75, flc: 123.0 },
+          { hp: 100, flc: 164.0 },
+          { hp: 125, flc: 205.0 },
+          { hp: 150, flc: 246.0 },
+          { hp: 200, flc: 330.0 },
+        ],
+        "550": [
+          { hp: 7.5, flc: 12.2 },
+          { hp: 10, flc: 16.0 },
+          { hp: 15, flc: 24.0 },
+          { hp: 20, flc: 31.0 },
+          { hp: 25, flc: 38.0 },
+          { hp: 30, flc: 46.0 },
+          { hp: 40, flc: 61.0 },
+          { hp: 50, flc: 75.0 },
+          { hp: 60, flc: 90.0 },
+          { hp: 75, flc: 111.0 },
+          { hp: 100, flc: 148.0 },
+          { hp: 125, flc: 185.0 },
+          { hp: 150, flc: 222.0 },
+          { hp: 200, flc: 294.0 },
+        ],
+      },
+      "430.248": {
+        "115": [
+          { hp: .17, flc: 4.4 },
+          { hp: .25, flc: 5.8 },
+          { hp: .33, flc: 7.2 },
+          { hp: .5, flc: 9.8 },
+          { hp: .75, flc: 13.8 },
+          { hp: 1, flc: 16 },
+          { hp: 1.5, flc: 20 },
+          { hp: 2, flc: 24 },
+          { hp: 3, flc: 34 },
+          { hp: 5, flc: 56 },
+          { hp: 7.5, flc: 80 },
+          { hp: 10, flc: 100 },
+        ],
+        "200": [
+          { hp: .17, flc: 2.5 },
+          { hp: .25, flc: 3.3 },
+          { hp: .33, flc: 4.1 },
+          { hp: .5, flc: 5.6 },
+          { hp: .75, flc: 7.9 },
+          { hp: 1, flc: 9.2 },
+          { hp: 1.5, flc: 11.5 },
+          { hp: 2, flc: 13.8 },
+          { hp: 3, flc: 19.6 },
+          { hp: 5, flc: 32.2 },
+          { hp: 7.5, flc: 46.0 },
+          { hp: 10, flc: 57.5 },
+        ],
+        "208": [
+          { hp: .17, flc: 2.4 },
+          { hp: .25, flc: 3.2 },
+          { hp: .33, flc: 4.0 },
+          { hp: .5, flc: 5.4 },
+          { hp: .75, flc: 7.6 },
+          { hp: 1, flc: 8.8 },
+          { hp: 1.5, flc: 11.0 },
+          { hp: 2, flc: 13.2 },
+          { hp: 3, flc: 18.7 },
+          { hp: 5, flc: 30.8 },
+          { hp: 7.5, flc: 44.0 },
+          { hp: 10, flc: 55.0 },
+        ],
+        "230": [
+          { hp: .17, flc: 2.2 },
+          { hp: .25, flc: 2.9 },
+          { hp: .33, flc: 3.6 },
+          { hp: .5, flc: 4.9 },
+          { hp: .75, flc: 6.9 },
+          { hp: 1, flc: 8.0 },
+          { hp: 1.5, flc: 10.0 },
+          { hp: 2, flc: 12.0 },
+          { hp: 3, flc: 17.0 },
+          { hp: 5, flc: 28.0 },
+          { hp: 7.5, flc: 40.0 },
+          { hp: 10, flc: 50.0 },
+        ],
+      },
+      "430.249": {
+        "115": [
+          { hp: 0.5, flc: 4.0 },
+          { hp: 0.75, flc: 4.8 },
+          { hp: 1, flc: 6.4 },
+          { hp: 1.5, flc: 9.0 },
+          { hp: 2, flc: 11.8 },
+        ],
+        "230": [
+          { hp: 0.5, flc: 2.0 },
+          { hp: 0.75, flc: 2.4 },
+          { hp: 1, flc: 3.2 },
+          { hp: 1.5, flc: 4.5 },
+          { hp: 2, flc: 5.9 },
+          { hp: 3, flc: 8.3 },
+          { hp: 5, flc: 13.2 },
+          { hp: 7.5, flc: 19.0 },
+          { hp: 10, flc: 24.0 },
+          { hp: 15, flc: 36.0 },
+          { hp: 20, flc: 47.0 },
+          { hp: 25, flc: 59.0 },
+          { hp: 30, flc: 69.0 },
+          { hp: 40, flc: 90.0 },
+          { hp: 50, flc: 113.0 },
+          { hp: 60, flc: 133.0 },
+          { hp: 75, flc: 166.0 },
+          { hp: 100, flc: 218.0 },
+          { hp: 125, flc: 270.0 },
+          { hp: 150, flc: 312.0 },
+          { hp: 200, flc: 416.0 },
+        ],
+        "460": [
+          { hp: 0.5, flc: 1.0 },
+          { hp: 0.75, flc: 1.2 },
+          { hp: 1, flc: 1.6 },
+          { hp: 1.5, flc: 2.3 },
+          { hp: 2, flc: 3.0 },
+          { hp: 3, flc: 4.2 },
+          { hp: 5, flc: 6.6 },
+          { hp: 7.5, flc: 9.5 },
+          { hp: 10, flc: 12.0 },
+          { hp: 15, flc: 18.0 },
+          { hp: 20, flc: 23.0 },
+          { hp: 25, flc: 29.0 },
+          { hp: 30, flc: 35.0 },
+          { hp: 40, flc: 45.0 },
+          { hp: 50, flc: 56.0 },
+          { hp: 60, flc: 67.0 },
+          { hp: 75, flc: 83.0 },
+          { hp: 100, flc: 109.0 },
+          { hp: 125, flc: 135.0 },
+          { hp: 150, flc: 156.0 },
+          { hp: 200, flc: 208.0 },
+        ],
+        "575": [
+          { hp: 0.5, flc: 0.8 },
+          { hp: 0.75, flc: 1.0 },
+          { hp: 1, flc: 1.3 },
+          { hp: 1.5, flc: 1.8 },
+          { hp: 2, flc: 2.4 },
+          { hp: 3, flc: 3.3 },
+          { hp: 5, flc: 5.3 },
+          { hp: 7.5, flc: 8.0 },
+          { hp: 10, flc: 10.0 },
+          { hp: 15, flc: 14.0 },
+          { hp: 20, flc: 19.0 },
+          { hp: 25, flc: 24.0 },
+          { hp: 30, flc: 28.0 },
+          { hp: 40, flc: 36.0 },
+          { hp: 50, flc: 45.0 },
+          { hp: 60, flc: 53.0 },
+          { hp: 75, flc: 66.0 },
+          { hp: 100, flc: 87.0 },
+          { hp: 125, flc: 108.0 },
+          { hp: 150, flc: 125.0 },
+          { hp: 200, flc: 167.0 },
+        ],
+        "2300": [
+          { hp: 60, flc: 14.0 },
+          { hp: 75, flc: 18.0 },
+          { hp: 100, flc: 23.0 },
+          { hp: 125, flc: 28.0 },
+          { hp: 150, flc: 32.0 },
+          { hp: 200, flc: 43.0 },
+        ],
+      },
+      "430.250": {
+        "115": [
+          { hp: 0.5, flc: 4.4 },
+          { hp: 0.75, flc: 6.4 },
+          { hp: 1, flc: 8.4 },
+          { hp: 1.5, flc: 12.0 },
+          { hp: 2, flc: 13.6 },
+        ],
+        "200": [
+          { hp: 0.5, flc: 2.5 },
+          { hp: 0.75, flc: 3.7 },
+          { hp: 1, flc: 4.8 },
+          { hp: 1.5, flc: 6.9 },
+          { hp: 2, flc: 7.8 },
+          { hp: 3, flc: 11.0 },
+          { hp: 5, flc: 17.5 },
+          { hp: 7.5, flc: 25.3 },
+          { hp: 10, flc: 32.2 },
+          { hp: 15, flc: 48.3 },
+          { hp: 20, flc: 62.1 },
+          { hp: 25, flc: 78.2 },
+          { hp: 30, flc: 92.0 },
+          { hp: 40, flc: 120.0 },
+          { hp: 50, flc: 150.0 },
+          { hp: 60, flc: 177.0 },
+          { hp: 75, flc: 221.0 },
+          { hp: 100, flc: 285.0 },
+          { hp: 125, flc: 359.0 },
+          { hp: 150, flc: 414.0 },
+          { hp: 200, flc: 552.0 },
+        ],
+        "208": [
+          { hp: 0.5, flc: 2.4 },
+          { hp: 0.75, flc: 3.5 },
+          { hp: 1, flc: 4.6 },
+          { hp: 1.5, flc: 6.6 },
+          { hp: 2, flc: 7.5 },
+          { hp: 3, flc: 10.6 },
+          { hp: 5, flc: 16.7 },
+          { hp: 7.5, flc: 24.2 },
+          { hp: 10, flc: 30.8 },
+          { hp: 15, flc: 46.2 },
+          { hp: 20, flc: 59.4 },
+          { hp: 25, flc: 74.8 },
+          { hp: 30, flc: 88.0 },
+          { hp: 40, flc: 114.0 },
+          { hp: 50, flc: 143.0 },
+          { hp: 60, flc: 169.0 },
+          { hp: 75, flc: 211.0 },
+          { hp: 100, flc: 273.0 },
+          { hp: 125, flc: 343.0 },
+          { hp: 150, flc: 396.0 },
+          { hp: 200, flc: 528.0 },
+        ],
+        "230": [
+          { hp: 0.5, flc: 2.2 },
+          { hp: 0.75, flc: 3.2 },
+          { hp: 1, flc: 4.2 },
+          { hp: 1.5, flc: 6.0 },
+          { hp: 2, flc: 6.8 },
+          { hp: 3, flc: 9.6 },
+          { hp: 5, flc: 15.2 },
+          { hp: 7.5, flc: 22.0 },
+          { hp: 10, flc: 28.0 },
+          { hp: 15, flc: 42.0 },
+          { hp: 20, flc: 54.0 },
+          { hp: 25, flc: 68.0 },
+          { hp: 30, flc: 80.0 },
+          { hp: 40, flc: 104.0 },
+          { hp: 50, flc: 130.0 },
+          { hp: 60, flc: 154.0 },
+          { hp: 75, flc: 192.0 },
+          { hp: 100, flc: 248.0 },
+          { hp: 125, flc: 312.0 },
+          { hp: 150, flc: 360.0 },
+          { hp: 200, flc: 480.0 },
+        ],
+        "460": [
+          { hp: 0.5, flc: 1.1 },
+          { hp: 0.75, flc: 1.6 },
+          { hp: 1, flc: 2.1 },
+          { hp: 1.5, flc: 3.0 },
+          { hp: 2, flc: 3.4 },
+          { hp: 3, flc: 4.8 },
+          { hp: 5, flc: 7.6 },
+          { hp: 7.5, flc: 11.0 },
+          { hp: 10, flc: 14.0 },
+          { hp: 15, flc: 21.0 },
+          { hp: 20, flc: 27.0 },
+          { hp: 25, flc: 34.0 },
+          { hp: 30, flc: 40.0 },
+          { hp: 40, flc: 52.0 },
+          { hp: 50, flc: 65.0 },
+          { hp: 60, flc: 77.0 },
+          { hp: 75, flc: 96.0 },
+          { hp: 100, flc: 124.0 },
+          { hp: 125, flc: 156.0 },
+          { hp: 150, flc: 180.0 },
+          { hp: 200, flc: 240.0 },
+          { hp: 250, flc: 302.0 },
+          { hp: 300, flc: 361.0 },
+          { hp: 350, flc: 414.0 },
+          { hp: 400, flc: 477.0 },
+          { hp: 450, flc: 515.0 },
+          { hp: 500, flc: 590.0 },
+        ],
+        "575": [
+          { hp: 0.5, flc: 0.9 },
+          { hp: 0.75, flc: 1.3 },
+          { hp: 1, flc: 1.7 },
+          { hp: 1.5, flc: 2.4 },
+          { hp: 2, flc: 2.7 },
+          { hp: 3, flc: 3.9 },
+          { hp: 5, flc: 6.1 },
+          { hp: 7.5, flc: 9.0 },
+          { hp: 10, flc: 11.0 },
+          { hp: 15, flc: 17.0 },
+          { hp: 20, flc: 22.0 },
+          { hp: 25, flc: 27.0 },
+          { hp: 30, flc: 32.0 },
+          { hp: 40, flc: 41.0 },
+          { hp: 50, flc: 52.0 },
+          { hp: 60, flc: 62.0 },
+          { hp: 75, flc: 77.0 },
+          { hp: 100, flc: 99.0 },
+          { hp: 125, flc: 125.0 },
+          { hp: 150, flc: 144.0 },
+          { hp: 200, flc: 192.0 },
+          { hp: 250, flc: 242.0 },
+          { hp: 300, flc: 289.0 },
+          { hp: 350, flc: 336.0 },
+          { hp: 400, flc: 382.0 },
+          { hp: 450, flc: 412.0 },
+          { hp: 500, flc: 472.0 },
+        ],
+        "2300": [
+          { hp: 60, flc: 16 },
+          { hp: 75, flc: 20 },
+          { hp: 100, flc: 26 },
+          { hp: 125, flc: 31 },
+          { hp: 150, flc: 37 },
+          { hp: 200, flc: 49 },
+          { hp: 250, flc: 60 },
+          { hp: 300, flc: 72 },
+          { hp: 350, flc: 83 },
+          { hp: 400, flc: 95 },
+          { hp: 450, flc: 108 },
+          { hp: 500, flc: 118 },
+        ],
+      },
+    };
+
+    /**********************************************************************
+     *  STEP B: POPULATE THE VOLTAGE-DROPDOWN AFTER SELECTING A TABLE
+     **********************************************************************/
+    function populateVoltageOptions() {
+      const tableSelect = document.getElementById('tableSelect');
+      const voltageSelect = document.getElementById('voltageSelect');
+
+      // Reset the voltage dropdown
+      voltageSelect.innerHTML = '<option value="">-- Select Voltage --</option>';
+
+      const chosenTable = tableSelect.value;
+      if (!chosenTable) return;
+
+      // Get all voltage keys for that table
+      const dataForTable = motorData[chosenTable];
+      if (!dataForTable) return;
+
+      const voltageKeys = Object.keys(dataForTable);
+
+      voltageKeys.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = `${v} V`;
+        voltageSelect.appendChild(opt);
+      });
+    }
+
+    /**********************************************************************
+     *  STEP C: CALCULATE THE INTERPOLATED HP
+     **********************************************************************/
+    function calculateHP() {
+      const tableKey = document.getElementById('tableSelect').value;
+      const voltageKey = document.getElementById('voltageSelect').value;
+      const ampsVal = parseFloat(document.getElementById('ampsInput').value);
+
+      if (!tableKey) {
+        alert('Please select a Table first.');
+        return;
+      }
+      if (!voltageKey) {
+        alert('Please select a Voltage.');
+        return;
+      }
+      if (isNaN(ampsVal) || ampsVal <= 0) {
+        alert('Please enter a valid positive amperage.');
+        return;
+      }
+
+      const dataArray = motorData[tableKey][voltageKey];
+      if (!dataArray || dataArray.length === 0) {
+        alert('No data found for this table/voltage.');
+        return;
+      }
+
+      dataArray.sort((a, b) => a.flc - b.flc);
+
+      if (ampsVal < dataArray[0].flc) {
+        const hp = dataArray[0].hp;
+        showResult(`Cannot interpolate because input amps are below the table range.  Consult manufacturer or an engineer for judgement.  Consult with AHJ for approval.`, `Smallest table entry: ${hp} HP at ${dataArray[0].flc} A`);
+        return;
+      }
+
+      if (ampsVal > dataArray[dataArray.length - 1].flc) {
+        const hp = dataArray[dataArray.length - 1].hp;
+        showResult(`Cannot interpolate because input amps are above the table range. Consult manufacturer or an engineer for judgement.  Consult with AHJ for approval.`, `Largest table entry: ${hp} HP at ${dataArray[dataArray.length - 1].flc} A`);
+        return;
+      }
+
+      let lower = null;
+      let upper = null;
+
+      for (let i = 0; i < dataArray.length - 1; i++) {
+        const current = dataArray[i];
+        const next = dataArray[i + 1];
+
+        if (Math.abs(ampsVal - current.flc) < 0.01) {
+          showResult(`Exactly matches table row => ${current.hp} HP`, `Table entry: ${current.hp} HP at ${current.flc} A`);
+          return;
+        }
+
+        if (ampsVal > current.flc && ampsVal < next.flc) {
+          lower = current;
+          upper = next;
+          break;
+        }
+      }
+
+      const lastRow = dataArray[dataArray.length - 1];
+      if (Math.abs(ampsVal - lastRow.flc) < 0.01) {
+        showResult(`Exactly matches table row => ${lastRow.hp} HP`, `Table entry: ${lastRow.hp} HP at ${lastRow.flc} A`);
+        return;
+      }
+
+      if (!lower || !upper) {
+        alert('Unable to locate bracket in table data (edge condition).');
+        return;
+      }
+
+      const fraction = (ampsVal - lower.flc) / (upper.flc - lower.flc);
+      const interpolatedHP = lower.hp + fraction * (upper.hp - lower.hp);
+
+      showResult(
+        `${interpolatedHP.toFixed(2)} HP (interpolated)`,
+        `Between ${lower.hp} HP at ${lower.flc} A and ${upper.hp} HP at ${upper.flc} A`
+      );
+    }
+
+    /**********************************************************************
+     *  STEP D: DISPLAY THE RESULT
+     **********************************************************************/
+    function showResult(hpString, details) {
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.style.display = 'block';
+      document.getElementById('hpValue').textContent = hpString;
+      document.getElementById('resultDetails').textContent = details || '';
+    }
+  </script>
+</body>
+</html>

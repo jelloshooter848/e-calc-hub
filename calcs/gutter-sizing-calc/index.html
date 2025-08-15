@@ -1,0 +1,159 @@
+
+<!-- saved from url=(0058)https://guttersizing.s3.us-east-2.amazonaws.com/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auxiliary Gutter &amp; Wireway Sizing Calculator</title>
+    <link rel="stylesheet" href="styles.css"></head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-2xl" data-dashlane-rid="7279800dc1b2a0c6" data-dashlane-classification="other">
+        <h1 class="text-2xl font-bold text-center mb-4">Auxiliary Gutter &amp; Wireway Sizing Calculator</h1>
+        <p class="text-gray-600 text-center mb-6">Enter conductor details to calculate the minimum gutter/wireway size per NEC requirements.</p>
+
+        <div id="conductorInputs" class="space-y-4">
+            <div class="conductor-entry grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 border rounded">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Conductor Size (AWG/kcmil)</label>
+                    <select class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" data-dashlane-rid="f404d4bb44bf6643" data-dashlane-classification="date,month">
+                        <option value="16">16 AWG</option>
+                        <option value="14">14 AWG</option>
+                        <option value="12">12 AWG</option>
+                        <option value="10">10 AWG</option>
+                        <option value="8">8 AWG</option>
+                        <option value="6">6 AWG</option>
+                        <option value="4">4 AWG</option>
+                        <option value="3">3 AWG</option>
+                        <option value="2">2 AWG</option>
+                        <option value="1">1 AWG</option>
+                        <option value="1/0">1/0 AWG</option>
+                        <option value="2/0">2/0 AWG</option>
+                        <option value="3/0">3/0 AWG</option>
+                        <option value="4/0">4/0 AWG</option>
+                        <option value="250">250 kcmil</option>
+                        <option value="300">300 kcmil</option>
+                        <option value="350">350 kcmil</option>
+                        <option value="400">400 kcmil</option>
+                        <option value="500">500 kcmil</option>
+                        <option value="600">600 kcmil</option>
+                        <option value="700">700 kcmil</option>
+                        <option value="750">750 kcmil</option>
+                        <option value="800">800 kcmil</option>
+                        <option value="900">900 kcmil</option>
+                        <option value="1000">1000 kcmil</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Quantity</label>
+                    <input type="number" min="1" value="1" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" data-dashlane-rid="747d92b750abed80" data-dashlane-classification="other">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="removeConductor(this)" class="w-full bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600" data-dashlane-label="true" data-dashlane-rid="9003f1776c4783c9" data-dashlane-classification="other">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between mt-4">
+            <button onclick="addConductor()" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600" data-dashlane-label="true" data-dashlane-rid="8a7f4f47bf31cd87" data-dashlane-classification="other">Add Conductor</button>
+            <div class="flex gap-4">
+                <button onclick="resetCalculator()" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Reset</button>
+                <button onclick="calculateSize()" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" data-dashlane-label="true" data-dashlane-rid="a21884d1e6e88adc" data-dashlane-classification="action">Calculate</button>
+            </div>
+        </div>
+
+        <div id="results" class="mt-6 hidden">
+            <div class="flex items-center mb-4">
+                <h2 class="text-xl font-semibold">Results:&nbsp;</h2>
+                <h2 id="recommendedSize" class="text-xl font-semibold text-green-600">4 x 4 inches</h2>
+            </div>
+            <p id="totalArea" class="text-gray-700">Total Conductor Area: 2.88 sq in</p>
+            <p id="minCrossSection" class="text-gray-700">Minimum Cross-Sectional Area (20% fill): 14.40 sq in</p>
+            <p id="minBendingSpace" class="text-gray-700">Minimum Bending Space: 1.5 inches</p>
+        </div>
+
+        <div id="sizeWarning" class="mt-4 p-4 bg-red-100 border border-red-400 rounded-lg hidden">
+            <div class="flex items-start">
+                <span class="text-red-600 font-bold text-lg mr-2">⚠️</span>
+                <div>
+                    <h3 class="text-red-800 font-semibold">Warning: Custom Size Required</h3>
+                    <p class="text-red-700 mt-1">Required size exceeds 24x24 inches. This will likely require a custom built enclosure that exceeds the minimum cross-sectional area shown above.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-sm text-gray-500 mt-4">
+            <p>Notes:</p>
+            <ul class="list-disc pl-5">
+                <li>16 AWG conductors are based on TFN insulated conductors.</li>
+                <li>14 AWG - 1000 kcmil conductors are based on THHN or THWN insulated conductors.</li>
+                <li>If more than 30 current-carrying conductors are present, they must be derated per NEC 310.15.</li>
+                <li>Splices and taps must be accessible and cannot take up more than 75% of the cross-sectional volume of the gutter or wireway per NEC 366.56/376.56.</li>
+            </ul>
+        </div>
+        
+        <div class="text-xs text-gray-400 mt-4 p-3 border border-gray-300 rounded bg-gray-50">
+            <p class="font-semibold mb-2">DISCLAIMER:</p>
+            <p style="font-size: 11px;">Calculations are based on NEC 366.22 (20% fill) and 312.6(A) for bending space. Always perform due diligence and verify calculations are correct for your specific application. This calculator is not to be used in lieu of consultation with a licensed electrician, contractor, electrical engineer, or other qualified professional. Always confirm calculations and specifications with a licensed professional before implementation. We take no liability for incorrect calculations, omissions, or any damages resulting from use of this tool. Local codes and regulations may differ from NEC requirements.</p>
+        </div>
+        <div class="text-sm text-gray-500 mt-4 text-center">
+            <button onclick="showConductorTable()" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Click to View Maximum Number of Conductors in Gutter or Wireway Table</button>
+        </div>
+        
+        <div class="text-center mt-4 pt-4 border-t border-gray-300">
+            <a href="https://jelloshooter848.github.io/e-calc-hub/" target="_blank" class="text-blue-500 hover:text-blue-700 text-sm">Visit E-Calc Hub for more electrical calculators</a>
+        </div>
+    </div>
+
+    <!-- Conductor Table Modal -->
+    <div id="conductorTableModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-4xl max-h-[90vh] overflow-auto">
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="closeConductorTable()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            <img src="image.png" alt="Conductor Table" class="w-full h-auto">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body></html>

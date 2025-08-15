@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conduit Fill Calculator - ETASV Training Hub</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Calculate conduit fill based on common conduit types, sizes and wire types">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="./icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./icons/icon-192x192.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+        .etasv-icon-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+        }
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e2e8f0;
+            z-index: 50;
+        }
+        @media (min-width: 768px) {
+            .mobile-nav {
+                display: none;
+            }
+        }
+        
+        /* Fixed header styles for app-like experience */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Extend past notch/safe area */
+            padding-top: env(safe-area-inset-top);
+            margin-top: calc(-1 * env(safe-area-inset-top));
+        }
+        
+        /* Header content container with proper safe area padding */
+        .header-content {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* Add padding to body to account for fixed header */
+        .main-content {
+            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+            }
+        }
+        
+        /* PWA-specific enhancements for notched devices */
+        @media (display-mode: standalone) {
+            .fixed-header {
+                /* Ensure header fills entire top area including notch */
+                top: 0;
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Prevent content from appearing in safe areas */
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
+
+        /* Calculator-specific styles */
+        :root{
+            --bg:#f6f6f6; --card:#ffffff; --muted:#eef0f3; --ink:#1f2937; --ink-2:#6b7280;
+            --accent:#1E3A8A; --ok:#1ea768; --warn:#eab308; --bad:#e11d48;
+            --ring:#dedfe3; --shadow:0 8px 28px rgba(0,0,0,.08);
+            --radius:16px;
+        }
+        
+        .calc-container {
+            background: var(--bg);
+            min-height: calc(100vh - 160px);
+            padding-bottom: 80px;
+        }
+        
+        .wrap{display:grid; grid-template-columns: 1.3fr 1fr; gap:28px; padding:24px; max-width:1200px; margin:0 auto}
+        .panel{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow)}
+        .left{padding:18px}
+        .right{padding:18px; display:grid; grid-template-rows:auto 1fr}
+        .tabs{display:inline-grid; grid-auto-flow:column; gap:6px; background:var(--muted); border-radius:999px; padding:4px}
+        .tab{border:none; background:transparent; padding:10px 16px; border-radius:999px; cursor:pointer; color:var(--ink-2); font-weight:600}
+        .tab.active{background:#fff; color:var(--ink); box-shadow:var(--shadow)}
+        .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+        .field{display:grid; gap:6px}
+        .calc-label{font-size:12px; color:var(--ink-2)}
+        .calc-select, .calc-input{width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d6d9de; background:#fff; color:var(--ink)}
+        .box{background:#f2f3f6; border-radius:12px; padding:12px}
+        .group{background:#eceef2; border-radius:12px; padding:12px; margin-top:10px; position:relative}
+        .group .idx{position:absolute; left:0; top:0; transform:translate(-50%, -50%); background:var(--accent); color:#fff; width:28px; height:28px; display:grid; place-items:center; border-radius:6px; font-weight:700}
+        .row{display:grid; grid-template-columns: 1fr 140px 120px; gap:10px; align-items:center}
+        .group small{color:var(--ink-2)}
+        .calc-btn{border:none; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700}
+        .calc-btn.solid{background:var(--accent); color:#fff}
+        .calc-btn.ghost{background:transparent; border:1px solid #d6d9de}
+        .footerbar{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:14px}
+        .donut{width:260px; height:260px; border-radius:50%; display:grid; place-items:center; margin:8px auto; background:conic-gradient(var(--ok) 0deg, var(--ring) 0deg); position:relative}
+        .donut::after{content:""; width:210px; height:210px; border-radius:50%; background:var(--card); position:absolute}
+        .donut .label{position:absolute; text-align:center}
+        .donut .pct{font-size:44px; font-weight:900; line-height:1}
+        .donut .cap{color:var(--ink-2)}
+        .statgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px}
+        .stat{background:#f7f7fa; border-radius:12px; padding:10px}
+        .stat b{display:block; font-size:12px; color:var(--ink-2); margin-bottom:6px}
+        .note{font-size:13px; margin-top:8px}
+        .note.ok{color:var(--ok)}
+        .note.warn{color:var(--warn)}
+        .note.bad{color:var(--bad)}
+        
+        @media (max-width:980px){
+            .wrap{grid-template-columns:1fr;}
+            .row{grid-template-columns:1fr 1fr 1fr}
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header -->
+    <header class="etasv-gradient-bg text-white fixed-header">
+        <div class="container mx-auto px-4 py-4 header-content">
+            <div class="flex items-center justify-between mb-3">
+                <a href="calculators.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to Calculators</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            
+            <div class="text-center">
+                <h1 class="text-2xl md:text-3xl font-bold">Conduit Fill Calculator</h1>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="calc-container main-content">
+        <div class="wrap">
+            <section class="left panel" id="app">
+                <div class="tabs" role="tablist">
+                    <button class="tab active" id="tab-nec" aria-selected="true">NEC</button>
+                    <button class="tab" id="tab-util" aria-selected="false">UTILITY</button>
+                </div>
+
+                <div class="grid" style="margin-top:16px">
+                    <div class="field">
+                        <label class="calc-label">Conduit type</label>
+                        <select id="conduitType" class="calc-select"></select>
+                    </div>
+                    <div class="field">
+                        <label class="calc-label">Conduit size</label>
+                        <select id="conduitSize" class="calc-select"></select>
+                    </div>
+                </div>
+
+                <div id="groups"></div>
+
+                <div class="footerbar">
+                    <div style="display:flex; gap:8px">
+                        <button class="calc-btn ghost" id="addGroup">＋ Add set</button>
+                        <button class="calc-btn ghost" id="removeGroup">－ Remove last</button>
+                    </div>
+                    <div style="display:flex; gap:8px">
+                        <button class="calc-btn" id="printBtn">Print/Save</button>
+                        <button class="calc-btn solid" id="calcBtn">Calculate</button>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="right panel">
+                <div>
+                    <div id="donut" class="donut" aria-label="fill donut">
+                        <div class="label">
+                            <div class="cap">Fill</div>
+                            <div id="pct" class="pct">0%</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="statgrid">
+                        <div class="stat"><b>Selected Size</b><div id="statSize">–</div></div>
+                        <div class="stat"><b>Max Allowed</b><div id="statLimit">–</div></div>
+                        <div class="stat"><b>Total Area Used</b><div id="statArea">–</div></div>
+                        <div class="stat"><b>Conduit Area</b><div id="statConduit">–</div></div>
+                        <div class="stat"><b>Jam Risk</b><div id="statJam">–</div></div>
+                    </div>
+                    <div id="note" class="note">Select options and click <b>Calculate</b>.</div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav md:hidden">
+        <div class="flex justify-around items-center py-3">
+            <a href="index.html" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+                </svg>
+                <span class="text-xs">Hub</span>
+            </a>
+            <button class="flex flex-col items-center text-etasv-blue">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span class="text-xs">Conduit Fill</span>
+            </button>
+            <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"/>
+                </svg>
+                <span class="text-xs">Call</span>
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Conduit Fill Calculator loaded');
+            
+            // Force scroll to top to ensure description is visible
+            window.scrollTo(0, 0);
+            
+            // Also try after a short delay to override any other scroll behavior
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+
+        /* ===================
+           CALCULATOR LOGIC - Original functionality preserved
+           =================== */
+        const CONDUIT = {
+            "EMT": {
+                "1/2": 0.622, "3/4": 0.824, "1": 1.049, "1-1/4": 1.380, "1-1/2": 1.610,
+                "2": 2.067, "2-1/2": 2.469, "3": 3.068, "3-1/2": 3.548, "4": 4.026
+            },
+            "RMC (GRC)": {
+                "1/2": 0.632, "3/4": 0.836, "1": 1.063, "1-1/4": 1.389, "1-1/2": 1.610,
+                "2": 2.067, "2-1/2": 2.469, "3": 3.068, "3-1/2": 3.548, "4": 4.026
+            },
+            "PVC Sch 40": {
+                "1/2": 0.622, "3/4": 0.824, "1": 1.049, "1-1/4": 1.380, "1-1/2": 1.610,
+                "2": 2.047, "2-1/2": 2.445, "3": 3.042, "3-1/2": 3.521, "4": 3.998
+            }
+        };
+
+        const WIRE = {
+            "Copper THHN": {
+                "14": 0.111, "12": 0.130, "10": 0.164, "8": 0.216, "6": 0.268, "4": 0.331,
+                "3": 0.365, "2": 0.405, "1": 0.448, "1/0": 0.492, "2/0": 0.537, "3/0": 0.594,
+                "4/0": 0.652, "250 kcmil": 0.728, "350 kcmil": 0.840, "500 kcmil": 0.976
+            },
+            "Aluminum XHHW": {
+                "6": 0.312, "4": 0.348, "3": 0.374, "2": 0.403, "1": 0.444, "1/0": 0.489,
+                "2/0": 0.536, "3/0": 0.590, "4/0": 0.652, "250 kcmil": 0.720, "350 kcmil": 0.830,
+                "500 kcmil": 0.960
+            }
+        };
+
+        const LIMITS = { one:0.53, two:0.31, many:0.40 };
+
+        const els = {
+            conduitType: document.getElementById('conduitType'),
+            conduitSize: document.getElementById('conduitSize'),
+            groups: document.getElementById('groups'),
+            addGroup: document.getElementById('addGroup'),
+            removeGroup: document.getElementById('removeGroup'),
+            calcBtn: document.getElementById('calcBtn'),
+            donut: document.getElementById('donut'),
+            pct: document.getElementById('pct'),
+            statSize: document.getElementById('statSize'),
+            statLimit: document.getElementById('statLimit'),
+            statArea: document.getElementById('statArea'),
+            statConduit: document.getElementById('statConduit'),
+            statJam: document.getElementById('statJam'),
+            note: document.getElementById('note'),
+            printBtn: document.getElementById('printBtn'),
+        };
+
+        function populateConduitTypes(){
+            els.conduitType.innerHTML = Object.keys(CONDUIT).map(t=>`<option>${t}</option>`).join('');
+        }
+        function populateConduitSizes(){
+            const t = els.conduitType.value; const sizes = Object.keys(CONDUIT[t]||{});
+            els.conduitSize.innerHTML = sizes.map(s=>`<option>${s}</option>`).join('');
+        }
+
+        let groupCount = 0;
+        function addGroup(){
+            groupCount++;
+            const g = document.createElement('div');
+            g.className = 'group';
+            g.dataset.groupId = groupCount;
+            g.innerHTML = `
+                <div class="idx">${groupCount}</div>
+                <div class="row">
+                    <div class="field">
+                        <label class="calc-label">Wire type</label>
+                        <select class="wireType calc-select"></select>
+                    </div>
+                    <div class="field">
+                        <label class="calc-label">Size</label>
+                        <select class="wireSize calc-select"></select>
+                    </div>
+                    <div class="field">
+                        <label class="calc-label">No. of wires</label>
+                        <input type="number" class="qty calc-input" min="1" step="1" value="1" />
+                    </div>
+                </div>
+                <div class="box"><small>Diameter: <span class="dsp-diam">–</span> in • Area each: <span class="dsp-area">–</span> in²</small></div>
+            `;
+            els.groups.appendChild(g);
+            populateWireTypeSize(g);
+            g.querySelector('.wireType').addEventListener('change', ()=> populateSizesFor(g));
+            g.querySelector('.wireSize').addEventListener('change', ()=> updateDiamDisplay(g));
+            g.querySelector('.qty').addEventListener('input', ()=> updateDiamDisplay(g));
+            updateDiamDisplay(g);
+        }
+        function removeGroup(){ if(els.groups.lastElementChild){ els.groups.removeChild(els.groups.lastElementChild); groupCount--; calc(); } }
+
+        function populateWireTypeSize(groupEl){
+            const selType = groupEl.querySelector('.wireType');
+            selType.innerHTML = Object.keys(WIRE).map(t=>`<option>${t}</option>`).join('');
+            populateSizesFor(groupEl);
+        }
+        function populateSizesFor(groupEl){
+            const type = groupEl.querySelector('.wireType').value;
+            const selSize = groupEl.querySelector('.wireSize');
+            const sizes = Object.keys(WIRE[type]||{});
+            selSize.innerHTML = sizes.map(s=>`<option>${s}</option>`).join('');
+            updateDiamDisplay(groupEl);
+        }
+        function updateDiamDisplay(groupEl){
+            const type = groupEl.querySelector('.wireType').value;
+            const size = groupEl.querySelector('.wireSize').value;
+            const d = (WIRE[type]||{})[size];
+            const area = d ? Math.PI * (d/2)**2 : 0;
+            groupEl.querySelector('.dsp-diam').textContent = d? d.toFixed(3): '–';
+            groupEl.querySelector('.dsp-area').textContent = d? area.toFixed(4): '–';
+        }
+
+        function getConduitID(){ const t=els.conduitType.value, s=els.conduitSize.value; return (CONDUIT[t]||{})[s]; }
+        function calc(){
+            const D = getConduitID();
+            if(!D){ render(0,0,0,0,{text:'Select a conduit size.', level:'warn'}); return; }
+
+            let totalArea = 0; let largestWireD = 0; let totalCount = 0;
+            els.groups.querySelectorAll('.group').forEach(g=>{
+                const type = g.querySelector('.wireType').value;
+                const size = g.querySelector('.wireSize').value;
+                const qty = parseInt(g.querySelector('.qty').value)||0;
+                const d = ((WIRE[type]||{})[size])||0;
+                if(d>0 && qty>0){
+                    totalArea += qty * Math.PI * (d/2)**2;
+                    largestWireD = Math.max(largestWireD, d);
+                    totalCount += qty;
+                }
+            });
+
+            const conduitArea = Math.PI * (D/2)**2;
+            const fill = conduitArea>0? (totalArea / conduitArea): 0;
+
+            let limitPct = LIMITS.many;
+            if(totalCount==1) limitPct = LIMITS.one; else if(totalCount==2) limitPct = LIMITS.two;
+
+            let jamText = 'n/a';
+            if(totalCount>=3 && largestWireD>0){
+                const ratio = D / largestWireD;
+                if(ratio>=2.8 && ratio<=3.2) jamText = `higher (ratio ${ratio.toFixed(2)})`;
+                else if(ratio<2.5) jamText = `very low (ratio ${ratio.toFixed(2)})`;
+                else jamText = `low (ratio ${ratio.toFixed(2)})`;
+            }
+
+            const status = fill <= limitPct ? {text:'Within NEC fill limit.', level:'ok'} : {text:'Exceeds NEC fill limit. Adjust size or quantity.', level:'bad'};
+            render(fill, limitPct, totalArea, conduitArea, status, jamText);
+        }
+
+        function render(fill, limitPct, totalArea, conduitArea, status, jamText='–'){
+            const pct = Math.min(999, fill*100);
+            const angle = Math.max(0, Math.min(360, pct*3.6));
+            const color = status.level==='ok'? getComputedStyle(document.documentElement).getPropertyValue('--ok') : (status.level==='warn'? getComputedStyle(document.documentElement).getPropertyValue('--warn') : getComputedStyle(document.documentElement).getPropertyValue('--bad'));
+            const donut = document.getElementById('donut');
+            donut.style.background = `conic-gradient(${color} ${angle}deg, var(--ring) ${angle}deg)`;
+            document.getElementById('pct').textContent = `${pct.toFixed(2)} %`;
+
+            document.getElementById('statSize').textContent = `${document.getElementById('conduitSize').value || '–'} (ID ${getConduitID()? getConduitID().toFixed(3):'–'} in)`;
+            document.getElementById('statLimit').textContent = `${(limitPct*100).toFixed(0)} %`;
+            document.getElementById('statArea').textContent = totalArea? `${totalArea.toFixed(4)} in²` : '–';
+            document.getElementById('statConduit').textContent = conduitArea? `${conduitArea.toFixed(4)} in²` : '–';
+            document.getElementById('statJam').textContent = jamText;
+
+            const note = document.getElementById('note');
+            note.className = `note ${status.level}`;
+            note.textContent = status.text;
+        }
+
+        function wireUp(){
+            document.getElementById('conduitType').addEventListener('change', ()=>{ populateConduitSizes(); calc(); });
+            document.getElementById('conduitSize').addEventListener('change', ()=> calc());
+            document.getElementById('addGroup').addEventListener('click', ()=> addGroup());
+            document.getElementById('removeGroup').addEventListener('click', ()=> removeGroup());
+            document.getElementById('calcBtn').addEventListener('click', calc);
+            document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+        }
+
+        function init(){
+            populateConduitTypes();
+            populateConduitSizes();
+            addGroup();
+            calc();
+            wireUp();
+        }
+        init();
+    </script>
+</body>
+</html>

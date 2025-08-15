@@ -1,0 +1,262 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #35424a;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    color: white; /* Change this to the desired color */
+}
+
+main {
+    padding: 20px;
+    max-width: 1200px; /* Adjusted for more horizontal space */
+    margin: auto;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2 {
+    color: #35424a;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select {
+    width: 100%;
+    max-width: 400px; /* Adjust this value as needed */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #35424a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.entry, #entryListSection, #resultsSection, #setsSection {
+    margin-bottom: 20px;
+}
+
+#entryList, #setsList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#entryList li, #setsList li {
+    background: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background: #35424a;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Inline-block layout for checkbox and label */
+.checkbox-container {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.checkbox-container label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px; /* Adjust this value as needed */
+}
+
+.checkbox-container input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Flexbox for horizontal layout */
+#horizontalContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+#leftColumn, #rightColumn {
+    flex: 1;
+    padding: 10px;
+}
+
+#leftColumn {
+    max-width: 50%; /* Adjust width as needed */
+}
+
+#rightColumn {
+    max-width: 50%; /* Adjust width as needed */
+}
+
+#setsContainer, #resultsSection, #ampacityResultsContainer, #sbjResultsContainer {
+    margin-top: 20px;
+}
+
+/* Specific classes for each element */
+.conduitType1 {
+    max-width: 200px; /* Adjust this value as needed */
+}
+
+.conduitSize1 {
+    max-width: 75px; /* Adjust this value as needed */
+}
+
+.conduitLength1 {
+    max-width: 75px; /* Adjust this value as needed */
+}
+
+.wireType1 {
+    max-width: 125px; /* Adjust this value as needed */
+}
+
+.wireSize1 {
+    max-width: 75px; /* Adjust this value as needed */
+}
+
+.wireLength1 {
+    max-width: 75px; /* Adjust this value as needed */
+}
+
+.wireCount1 {
+    max-width: 75px; /* Adjust this value as needed */
+}
+
+.tempRatingSelect {
+    max-width: 200px; /* Adjust this value as needed */
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode header {
+    background-color: #1f1f1f;
+}
+
+body.dark-mode main {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+body.dark-mode input, body.dark-mode select, body-dark-mode button {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+body.dark-mode footer {
+    background-color: #1f1f1f;
+}
+
+/* Dark mode specific styles for other elements */
+body.dark-mode .column-1 {
+    background-color: #2c2c2c; /* Darker blue */
+}
+
+body.dark-mode .column-2 {
+    background-color: #3c3c3c; /* Darker coral */
+}
+
+body.dark-mode .column-3 {
+    background-color: #4c4c4c; /* Darker goldenrod */
+}
+
+body.dark-mode .nested-column-1 {
+    background-color: #1e1e1e; /* Darkest blue */
+}
+
+body.dark-mode .nested-column-2 {
+    background-color: #2e2e2e; /* Darkest coral */
+}
+
+body-dark-mode #entryList li, body-dark-mode #setsList li {
+    background: #2e2e2e;
+    border: 1px solid #555;
+}
+
+body.dark-mode #totalWeight, body-dark-mode #wireFill, body-dark-mode #cumulativeWeight {
+    color: #e0e0e0;
+}
+
+body.dark-mode button {
+    background-color: #555;
+    color: #e0e0e0;
+    border: none;
+}
+
+body.dark-mode button:hover {
+    background-color: #777;
+}
+
+/* Dark Mode Toggle Button */
+#darkModeToggle {
+    background-color: #666; /* Different from footer color */
+    color: #e0e0e0;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#darkModeToggle:hover {
+    background-color: #888;
+}
+
+body-dark-mode #darkModeToggle {
+    background-color: #888; /* Different from footer color */
+    color: #e0e0e0;
+}
+
+body-dark-mode #darkModeToggle:hover {
+    background-color: #aaa;
+}
+
+/* Improved contrast for h2 elements in light mode and dark mode */
+h2 {
+    color: #111; /* Darker color for better contrast in light mode */
+}
+
+body.dark-mode h2 {
+    color: #ddd; /* Lighter color for better contrast in dark mode */
+}

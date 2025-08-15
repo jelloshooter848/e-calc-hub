@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Conduit Fill Calculator – Single File</title>
+<style>
+  :root{
+    --bg:#f6f6f6; --card:#ffffff; --muted:#eef0f3; --ink:#1f2937; --ink-2:#6b7280;
+    --accent:#7b5a43; --ok:#1ea768; --warn:#eab308; --bad:#e11d48;
+    --ring:#dedfe3; --shadow:0 8px 28px rgba(0,0,0,.08);
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial; background:var(--bg); color:var(--ink)}
+  header{padding:22px 24px; background:#fff; box-shadow:var(--shadow); position:sticky; top:0; z-index:10}
+  header h1{font-size:18px; margin:0}
+  header .sub{color:var(--ink-2); font-size:12px}
+
+  .wrap{display:grid; grid-template-columns: 1.3fr 1fr; gap:28px; padding:24px; max-width:1200px; margin:0 auto}
+
+  .panel{background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow)}
+  .left{padding:18px}
+  .right{padding:18px; display:grid; grid-template-rows:auto 1fr}
+
+  .tabs{display:inline-grid; grid-auto-flow:column; gap:6px; background:var(--muted); border-radius:999px; padding:4px}
+  .tab{border:none; background:transparent; padding:10px 16px; border-radius:999px; cursor:pointer; color:var(--ink-2); font-weight:600}
+  .tab.active{background:#fff; color:var(--ink); box-shadow:var(--shadow)}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .field{display:grid; gap:6px}
+  label{font-size:12px; color:var(--ink-2)}
+  select, input[type="number"]{width:100%; padding:10px 12px; border-radius:12px; border:1px solid #d6d9de; background:#fff; color:var(--ink)}
+  .box{background:#f2f3f6; border-radius:12px; padding:12px}
+
+  .group{background:#eceef2; border-radius:12px; padding:12px; margin-top:10px; position:relative}
+  .group .idx{position:absolute; left:0; top:0; transform:translate(-50%, -50%); background:var(--accent); color:#fff; width:28px; height:28px; display:grid; place-items:center; border-radius:6px; font-weight:700}
+  .row{display:grid; grid-template-columns: 1fr 140px 120px; gap:10px; align-items:center}
+  .group small{color:var(--ink-2)}
+  .btn{border:none; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:700}
+  .btn.solid{background:var(--accent); color:#fff}
+  .btn.ghost{background:transparent; border:1px solid #d6d9de}
+
+  .footerbar{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:14px}
+
+  .donut{width:260px; height:260px; border-radius:50%; display:grid; place-items:center; margin:8px auto; background:conic-gradient(var(--ok) 0deg, var(--ring) 0deg); position:relative}
+  .donut::after{content:""; width:210px; height:210px; border-radius:50%; background:var(--card); position:absolute}
+  .donut .label{position:absolute; text-align:center}
+  .donut .pct{font-size:44px; font-weight:900; line-height:1}
+  .donut .cap{color:var(--ink-2)}
+
+  .statgrid{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px}
+  .stat{background:#f7f7fa; border-radius:12px; padding:10px}
+  .stat b{display:block; font-size:12px; color:var(--ink-2); margin-bottom:6px}
+
+  .note{font-size:13px; margin-top:8px}
+  .note.ok{color:var(--ok)}
+  .note.warn{color:var(--warn)}
+  .note.bad{color:var(--bad)}
+
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr;}
+    .row{grid-template-columns:1fr 1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Conduit Fill Calculator <span class="sub">(NEC‑style • single file)</span></h1>
+</header>
+
+<div class="wrap">
+  <section class="left panel" id="app">
+    <div class="tabs" role="tablist">
+      <button class="tab active" id="tab-nec" aria-selected="true">NEC</button>
+      <button class="tab" id="tab-util" aria-selected="false">UTILITY</button>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="field">
+        <label>Conduit type</label>
+        <select id="conduitType"></select>
+      </div>
+      <div class="field">
+        <label>Conduit size</label>
+        <select id="conduitSize"></select>
+      </div>
+    </div>
+
+    <div id="groups"></div>
+
+    <div class="footerbar">
+      <div style="display:flex; gap:8px">
+        <button class="btn ghost" id="addGroup">＋ Add set</button>
+        <button class="btn ghost" id="removeGroup">－ Remove last</button>
+      </div>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="printBtn">Print/Save</button>
+        <button class="btn solid" id="calcBtn">Calculate</button>
+      </div>
+    </div>
+  </section>
+
+  <aside class="right panel">
+    <div>
+      <div id="donut" class="donut" aria-label="fill donut">
+        <div class="label">
+          <div class="cap">Fill</div>
+          <div id="pct" class="pct">0%</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="statgrid">
+        <div class="stat"><b>Selected Size</b><div id="statSize">–</div></div>
+        <div class="stat"><b>Max Allowed</b><div id="statLimit">–</div></div>
+        <div class="stat"><b>Total Area Used</b><div id="statArea">–</div></div>
+        <div class="stat"><b>Conduit Area</b><div id="statConduit">–</div></div>
+        <div class="stat"><b>Jam Risk</b><div id="statJam">–</div></div>
+      </div>
+      <div id="note" class="note">Select options and click <b>Calculate</b>.</div>
+    </div>
+  </aside>
+</div>
+
+<script>
+/* ===================
+   1) DATA – edit these objects directly when you need to change values
+   All diameters are inches. Conduit values are INNER DIAMETERS.
+   =================== */
+const CONDUIT = {
+  "EMT": {
+    "1/2": 0.622, "3/4": 0.824, "1": 1.049, "1-1/4": 1.380, "1-1/2": 1.610,
+    "2": 2.067, "2-1/2": 2.469, "3": 3.068, "3-1/2": 3.548, "4": 4.026
+  },
+  "RMC (GRC)": {
+    "1/2": 0.632, "3/4": 0.836, "1": 1.063, "1-1/4": 1.389, "1-1/2": 1.610,
+    "2": 2.067, "2-1/2": 2.469, "3": 3.068, "3-1/2": 3.548, "4": 4.026
+  },
+  "PVC Sch 40": {
+    "1/2": 0.622, "3/4": 0.824, "1": 1.049, "1-1/4": 1.380, "1-1/2": 1.610,
+    "2": 2.047, "2-1/2": 2.445, "3": 3.042, "3-1/2": 3.521, "4": 3.998
+  }
+};
+
+const WIRE = {
+  "Copper THHN": {
+    "14": 0.111, "12": 0.130, "10": 0.164, "8": 0.216, "6": 0.268, "4": 0.331,
+    "3": 0.365, "2": 0.405, "1": 0.448, "1/0": 0.492, "2/0": 0.537, "3/0": 0.594,
+    "4/0": 0.652, "250 kcmil": 0.728, "350 kcmil": 0.840, "500 kcmil": 0.976
+  },
+  "Aluminum XHHW": {
+    "6": 0.312, "4": 0.348, "3": 0.374, "2": 0.403, "1": 0.444, "1/0": 0.489,
+    "2/0": 0.536, "3/0": 0.590, "4/0": 0.652, "250 kcmil": 0.720, "350 kcmil": 0.830,
+    "500 kcmil": 0.960
+  }
+};
+
+const LIMITS = { one:0.53, two:0.31, many:0.40 };
+
+/* ========== 2) UI BINDINGS ========== */
+const els = {
+  conduitType: document.getElementById('conduitType'),
+  conduitSize: document.getElementById('conduitSize'),
+  groups: document.getElementById('groups'),
+  addGroup: document.getElementById('addGroup'),
+  removeGroup: document.getElementById('removeGroup'),
+  calcBtn: document.getElementById('calcBtn'),
+  donut: document.getElementById('donut'),
+  pct: document.getElementById('pct'),
+  statSize: document.getElementById('statSize'),
+  statLimit: document.getElementById('statLimit'),
+  statArea: document.getElementById('statArea'),
+  statConduit: document.getElementById('statConduit'),
+  statJam: document.getElementById('statJam'),
+  note: document.getElementById('note'),
+  printBtn: document.getElementById('printBtn'),
+};
+
+/* ========== 3) INIT DROPDOWNS ========== */
+function populateConduitTypes(){
+  els.conduitType.innerHTML = Object.keys(CONDUIT).map(t=>`<option>${t}</option>`).join('');
+}
+function populateConduitSizes(){
+  const t = els.conduitType.value; const sizes = Object.keys(CONDUIT[t]||{});
+  els.conduitSize.innerHTML = sizes.map(s=>`<option>${s}</option>`).join('');
+}
+
+/* ========== 4) CONDUCTOR GROUPS ========== */
+let groupCount = 0;
+function addGroup(){
+  groupCount++;
+  const g = document.createElement('div');
+  g.className = 'group';
+  g.dataset.groupId = groupCount;
+  g.innerHTML = `
+    <div class="idx">${groupCount}</div>
+    <div class="row">
+      <div class="field">
+        <label>Wire type</label>
+        <select class="wireType"></select>
+      </div>
+      <div class="field">
+        <label>Size</label>
+        <select class="wireSize"></select>
+      </div>
+      <div class="field">
+        <label>No. of wires</label>
+        <input type="number" class="qty" min="1" step="1" value="1" />
+      </div>
+    </div>
+    <div class="box"><small>Diameter: <span class="dsp-diam">–</span> in • Area each: <span class="dsp-area">–</span> in²</small></div>
+  `;
+  els.groups.appendChild(g);
+  populateWireTypeSize(g);
+  g.querySelector('.wireType').addEventListener('change', ()=> populateSizesFor(g));
+  g.querySelector('.wireSize').addEventListener('change', ()=> updateDiamDisplay(g));
+  g.querySelector('.qty').addEventListener('input', ()=> updateDiamDisplay(g));
+  updateDiamDisplay(g);
+}
+function removeGroup(){ if(els.groups.lastElementChild){ els.groups.removeChild(els.groups.lastElementChild); groupCount--; calc(); } }
+
+function populateWireTypeSize(groupEl){
+  const selType = groupEl.querySelector('.wireType');
+  selType.innerHTML = Object.keys(WIRE).map(t=>`<option>${t}</option>`).join('');
+  populateSizesFor(groupEl);
+}
+function populateSizesFor(groupEl){
+  const type = groupEl.querySelector('.wireType').value;
+  const selSize = groupEl.querySelector('.wireSize');
+  const sizes = Object.keys(WIRE[type]||{});
+  selSize.innerHTML = sizes.map(s=>`<option>${s}</option>`).join('');
+  updateDiamDisplay(groupEl);
+}
+function updateDiamDisplay(groupEl){
+  const type = groupEl.querySelector('.wireType').value;
+  const size = groupEl.querySelector('.wireSize').value;
+  const d = (WIRE[type]||{})[size];
+  const area = d ? Math.PI * (d/2)**2 : 0;
+  groupEl.querySelector('.dsp-diam').textContent = d? d.toFixed(3): '–';
+  groupEl.querySelector('.dsp-area').textContent = d? area.toFixed(4): '–';
+}
+
+/* ========== 5) CALCULATION ==========
+   - Sum qty * area for all conductors
+   - Conduit area from inner diameter
+   - Compare to NEC limit based on total conductor count
+*/
+function getConduitID(){ const t=els.conduitType.value, s=els.conduitSize.value; return (CONDUIT[t]||{})[s]; }
+function calc(){
+  const D = getConduitID();
+  if(!D){ render(0,0,0,0,{text:'Select a conduit size.', level:'warn'}); return; }
+
+  let totalArea = 0; let largestWireD = 0; let totalCount = 0;
+  els.groups.querySelectorAll('.group').forEach(g=>{
+    const type = g.querySelector('.wireType').value;
+    const size = g.querySelector('.wireSize').value;
+    const qty = parseInt(g.querySelector('.qty').value)||0;
+    const d = ((WIRE[type]||{})[size])||0;
+    if(d>0 && qty>0){
+      totalArea += qty * Math.PI * (d/2)**2;
+      largestWireD = Math.max(largestWireD, d);
+      totalCount += qty;
+    }
+  });
+
+  const conduitArea = Math.PI * (D/2)**2;
+  const fill = conduitArea>0? (totalArea / conduitArea): 0;
+
+  // NEC limits by count
+  let limitPct = LIMITS.many; // default for 3+
+  if(totalCount==1) limitPct = LIMITS.one; else if(totalCount==2) limitPct = LIMITS.two;
+
+  // Jam heuristic
+  let jamText = 'n/a';
+  if(totalCount>=3 && largestWireD>0){
+    const ratio = D / largestWireD;
+    if(ratio>=2.8 && ratio<=3.2) jamText = `higher (ratio ${ratio.toFixed(2)})`;
+    else if(ratio<2.5) jamText = `very low (ratio ${ratio.toFixed(2)})`;
+    else jamText = `low (ratio ${ratio.toFixed(2)})`;
+  }
+
+  const status = fill <= limitPct ? {text:'Within NEC fill limit.', level:'ok'} : {text:'Exceeds NEC fill limit. Adjust size or quantity.', level:'bad'};
+  render(fill, limitPct, totalArea, conduitArea, status, jamText);
+}
+
+function render(fill, limitPct, totalArea, conduitArea, status, jamText='–'){
+  const pct = Math.min(999, fill*100);
+  const angle = Math.max(0, Math.min(360, pct*3.6));
+  const color = status.level==='ok'? getComputedStyle(document.documentElement).getPropertyValue('--ok') : (status.level==='warn'? getComputedStyle(document.documentElement).getPropertyValue('--warn') : getComputedStyle(document.documentElement).getPropertyValue('--bad'));
+  const donut = document.getElementById('donut');
+  donut.style.background = `conic-gradient(${color} ${angle}deg, var(--ring) ${angle}deg)`;
+  document.getElementById('pct').textContent = `${pct.toFixed(2)} %`;
+
+  document.getElementById('statSize').textContent = `${document.getElementById('conduitSize').value || '–'} (ID ${getConduitID()? getConduitID().toFixed(3):'–'} in)`;
+  document.getElementById('statLimit').textContent = `${(limitPct*100).toFixed(0)} %`;
+  document.getElementById('statArea').textContent = totalArea? `${totalArea.toFixed(4)} in²` : '–';
+  document.getElementById('statConduit').textContent = conduitArea? `${conduitArea.toFixed(4)} in²` : '–';
+  document.getElementById('statJam').textContent = jamText;
+
+  const note = document.getElementById('note');
+  note.className = `note ${status.level}`;
+  note.textContent = status.text;
+}
+
+/* ========== 6) WIRING ========== */
+function wireUp(){
+  document.getElementById('conduitType').addEventListener('change', ()=>{ populateConduitSizes(); calc(); });
+  document.getElementById('conduitSize').addEventListener('change', ()=> calc());
+  document.getElementById('addGroup').addEventListener('click', ()=> addGroup());
+  document.getElementById('removeGroup').addEventListener('click', ()=> removeGroup());
+  document.getElementById('calcBtn').addEventListener('click', calc);
+  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+}
+
+/* ========== 7) STARTUP ========== */
+function init(){
+  populateConduitTypes();
+  populateConduitSizes();
+  addGroup();
+  calc();
+  wireUp();
+}
+init();
+</script>
+</body>
+</html>
