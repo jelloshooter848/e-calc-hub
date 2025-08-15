@@ -147,45 +147,32 @@
             </p>
         </section>
         
-        <!-- Embedded IBEW 332 Benefits Section -->
-        <section class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
-            <div class="bg-etasv-blue text-white p-4 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-lg p-2 mr-3">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h16v6a2 2 0 002-2V6a2 2 0 00-2-2H4z"/>
-                            <path d="M18 10v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4h12z"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">IBEW 332 Benefits</h3>
-                        <p class="text-blue-100 text-xs">ibew332benefits.com</p>
-                    </div>
-                </div>
-                <button onclick="openExternal()" class="text-blue-100 hover:text-white transition-colors text-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        <!-- External Redirect Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <div class="text-center">
+                <div class="etasv-icon-bg rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h16v6a2 2 0 002-2V6a2 2 0 00-2-2H4z"/>
+                        <path d="M18 10v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4h12z"/>
                     </svg>
-                </button>
-            </div>
-            
-            <!-- Embedded iframe -->
-            <div class="relative">
-                <iframe 
-                    id="benefitsFrame"
-                    src="https://ibew332benefits.com/" 
-                    class="w-full border-0"
-                    style="height: calc(100vh - 200px); min-height: 600px;"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-                    title="IBEW 332 Benefits">
-                </iframe>
+                </div>
                 
-                <!-- Loading overlay -->
-                <div id="loadingOverlay" class="absolute inset-0 bg-white flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-etasv-blue mx-auto mb-4"></div>
-                        <p class="text-etasv-gray">Loading IBEW 332 Benefits...</p>
-                    </div>
+                <h2 class="text-2xl font-bold text-etasv-navy mb-4">Opening IBEW 332 Benefits</h2>
+                <p class="text-etasv-gray mb-6">Benefits portal will open in your default browser in <span id="countdown" class="countdown font-bold text-etasv-blue">3</span> seconds.</p>
+                
+                <div class="space-y-4">
+                    <button onclick="openExternal()" 
+                       class="inline-flex items-center bg-etasv-blue text-white px-8 py-3 rounded-lg hover:bg-etasv-navy transition-colors font-medium text-lg">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        Open Benefits Now
+                    </button>
+                    
+                    <button onclick="cancelRedirect()" 
+                            class="block mx-auto text-etasv-gray hover:text-etasv-navy transition-colors">
+                        Cancel and stay in app
+                    </button>
                 </div>
             </div>
         </section>
@@ -197,9 +184,9 @@
                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
                 </svg>
                 <div>
-                    <h3 class="font-semibold text-blue-900 mb-2">Embedded Benefits</h3>
+                    <h3 class="font-semibold text-blue-900 mb-2">External Browser Required</h3>
                     <p class="text-blue-800 text-sm">
-                        IBEW 332 Benefits is embedded within the ETASV app. Use the external link button above if you need to open it in a new window.
+                        IBEW 332 Benefits requires opening in your default browser for full functionality and security. You can return to the ETASV app anytime.
                     </p>
                 </div>
             </div>
@@ -232,8 +219,11 @@
     </nav>
 
     <script>
+        let countdownActive = true;
+        let secondsLeft = 3;
+        
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('IBEW 332 Benefits embedded page loaded');
+            console.log('IBEW 332 Benefits redirect page loaded');
             
             // Force scroll to top to ensure description is visible
             window.scrollTo(0, 0);
@@ -243,38 +233,40 @@
                 window.scrollTo(0, 0);
             }, 100);
             
-            // Handle iframe loading
-            const iframe = document.getElementById('benefitsFrame');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            iframe.addEventListener('load', () => {
-                console.log('Benefits iframe loaded');
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                }, 1000);
-            });
-            
-            // Handle iframe errors (like X-Frame-Options blocking)
-            iframe.addEventListener('error', () => {
-                console.log('Benefits iframe failed to load');
-                loadingOverlay.innerHTML = `
-                    <div class="text-center">
-                        <div class="text-red-500 mb-4">
-                            <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
-                            </svg>
-                        </div>
-                        <p class="text-etasv-gray mb-4">Unable to embed IBEW 332 Benefits. The external site prevents embedding.</p>
-                        <button onclick="openExternal()" class="bg-etasv-blue text-white px-6 py-2 rounded-lg hover:bg-etasv-navy transition-colors">
-                            Open in External Window
-                        </button>
-                    </div>
-                `;
-            });
+            // Start countdown and auto-redirect
+            startCountdown();
         });
         
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                if (!countdownActive) {
+                    clearInterval(timer);
+                    return;
+                }
+                
+                secondsLeft--;
+                countdownElement.textContent = secondsLeft;
+                
+                if (secondsLeft <= 0) {
+                    clearInterval(timer);
+                    if (countdownActive) {
+                        openExternal();
+                    }
+                }
+            }, 1000);
+        }
+        
         function openExternal() {
+            // Open in default browser (external to PWA)
             window.open('https://ibew332benefits.com/', '_blank');
+        }
+        
+        function cancelRedirect() {
+            countdownActive = false;
+            const countdownElement = document.getElementById('countdown');
+            countdownElement.textContent = 'Cancelled';
         }
     </script>
 </body>
