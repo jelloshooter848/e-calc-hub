@@ -1,28 +1,28 @@
-const CACHE_NAME = 'etasv-training-hub-v2';
+const CACHE_NAME = 'etasv-training-hub-v3';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/journeyman-courses.html',
-  '/calculators.html',
-  '/course-bluebeam-fundamentals.html',
-  '/course-bluebeam-design.html',
-  '/course-hvac.html',
-  '/course-foremandevelopment.html',
-  '/course-firealarm.html',
-  '/course-fiberoptic.html',
-  '/course-mechanicalbending.html',
-  '/course-handbending.html',
-  '/course-microsoft365.html',
-  '/course-motorcontrols.html',
-  '/course-instrumentation.html',
-  '/course-osha10.html',
-  '/course-osha30.html',
-  '/course-nfpa70e.html',
-  '/course-photovoltaic.html',
-  '/course-calstac.html',
-  '/photos/etasv_logo.png',
-  '/manifest.json',
-  '/browserconfig.xml',
+  './',
+  './index.html',
+  './journeyman-courses.html',
+  './calculators.html',
+  './course-bluebeam-fundamentals.html',
+  './course-bluebeam-design.html',
+  './course-hvac.html',
+  './course-foremandevelopment.html',
+  './course-firealarm.html',
+  './course-fiberoptic.html',
+  './course-mechanicalbending.html',
+  './course-handbending.html',
+  './course-microsoft365.html',
+  './course-motorcontrols.html',
+  './course-instrumentation.html',
+  './course-osha10.html',
+  './course-osha30.html',
+  './course-nfpa70e.html',
+  './course-photovoltaic.html',
+  './course-calstac.html',
+  './photos/etasv_logo.png',
+  './manifest.json',
+  './browserconfig.xml',
   'https://cdn.tailwindcss.com',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 ];
@@ -94,7 +94,7 @@ self.addEventListener('fetch', event => {
             })
             .catch(() => {
               // Return cached index.html for failed navigation (PWA shell)
-              return caches.match('/index.html');
+              return caches.match('./index.html');
             });
         })
     );
