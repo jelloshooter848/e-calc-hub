@@ -4,6 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETASV App Hub - Training Tools for Electricians</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Electrical Training Alliance of Silicon Valley - Course Registration and Training Hub">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="msapplication-TileColor" content="#1E3A8A">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-192x192.png">
+    <link rel="shortcut icon" href="/icons/icon-192x192.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -78,9 +102,87 @@
         .default-template {
             display: none;
         }
+        
+        /* PWA Enhancements */
+        @media (display-mode: standalone) {
+            body {
+                -webkit-user-select: none;
+                -webkit-touch-callout: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            /* Hide template toggle in standalone mode */
+            #globalToggle {
+                display: none;
+            }
+            
+            /* Add safe area padding for notched devices */
+            header {
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Enhance touch targets */
+            .tool-card {
+                min-height: 44px;
+            }
+            
+            a, button {
+                min-height: 44px;
+                min-width: 44px;
+            }
+        }
+        
+        /* Prevent zoom on form inputs */
+        input, select, textarea {
+            font-size: 16px;
+        }
+        
+        /* App-like loading animation */
+        .app-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #1E3A8A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .app-loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen">
+    <!-- App Loading Screen -->
+    <div id="appLoading" class="app-loading">
+        <div class="text-center text-white">
+            <div class="loading-spinner mx-auto mb-4"></div>
+            <div class="text-lg font-semibold">ETASV Training Hub</div>
+            <div class="text-sm text-blue-200">Loading...</div>
+        </div>
+    </div>
+
     <!-- Default Template -->
     <div id="defaultTemplate" class="default-template">
     <!-- Header -->
@@ -636,8 +738,185 @@
     </div>
 
     <script>
+        // PWA Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('ServiceWorker registration failed: ', error);
+                    });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        let installButton = null;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('PWA install prompt triggered');
+            e.preventDefault();
+            deferredPrompt = e;
+            showInstallPromotion();
+        });
+
+        function showInstallPromotion() {
+            if (installButton) return; // Already showing
+
+            installButton = document.createElement('div');
+            installButton.innerHTML = `
+                <div id="install-banner" class="fixed bottom-4 left-4 right-4 bg-etasv-blue text-white p-4 rounded-lg shadow-lg z-50 transform translate-y-0 transition-transform duration-300">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <div>
+                                <div class="font-semibold text-sm">Install ETASV App</div>
+                                <div class="text-xs text-blue-200">Add to your home screen for quick access</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button id="install-app-btn" class="bg-white text-etasv-blue px-3 py-1 rounded text-sm font-medium hover:bg-blue-50">
+                                Install
+                            </button>
+                            <button id="dismiss-install-btn" class="text-blue-200 hover:text-white">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(installButton);
+
+            // Install button click handler
+            document.getElementById('install-app-btn').addEventListener('click', async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response to the install prompt: ${outcome}`);
+                    deferredPrompt = null;
+                    hideInstallPromotion();
+                }
+            });
+
+            // Dismiss button click handler
+            document.getElementById('dismiss-install-btn').addEventListener('click', () => {
+                hideInstallPromotion();
+                localStorage.setItem('installPromptDismissed', Date.now());
+            });
+
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                if (installButton) {
+                    hideInstallPromotion();
+                }
+            }, 10000);
+        }
+
+        function hideInstallPromotion() {
+            if (installButton) {
+                const banner = installButton.querySelector('#install-banner');
+                if (banner) {
+                    banner.style.transform = 'translateY(100%)';
+                    setTimeout(() => {
+                        if (installButton && installButton.parentNode) {
+                            installButton.parentNode.removeChild(installButton);
+                        }
+                        installButton = null;
+                    }, 300);
+                }
+            }
+        }
+
+        // Check if user previously dismissed the prompt (within last 7 days)
+        function shouldShowInstallPrompt() {
+            const dismissed = localStorage.getItem('installPromptDismissed');
+            if (!dismissed) return true;
+            
+            const dismissedTime = parseInt(dismissed);
+            const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            return dismissedTime < oneWeekAgo;
+        }
+
+        // Handle successful app installation
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('PWA was installed successfully');
+            hideInstallPromotion();
+            
+            // Optional: Show success message
+            const successBanner = document.createElement('div');
+            successBanner.innerHTML = `
+                <div class="fixed top-4 left-4 right-4 bg-green-500 text-white p-3 rounded-lg shadow-lg z-50">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="text-sm font-medium">ETASV App installed successfully!</span>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(successBanner);
+            
+            setTimeout(() => {
+                if (successBanner.parentNode) {
+                    successBanner.parentNode.removeChild(successBanner);
+                }
+            }, 3000);
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             console.log('ETASV App Hub loaded successfully');
+            
+            // Hide loading screen after app is ready
+            setTimeout(() => {
+                const loadingScreen = document.getElementById('appLoading');
+                if (loadingScreen) {
+                    loadingScreen.classList.add('hidden');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 500);
+                }
+            }, 1500);
+            
+            // Detect if running in standalone mode (PWA)
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+                               || window.navigator.standalone 
+                               || document.referrer.includes('android-app://');
+            
+            if (isStandalone) {
+                console.log('Running in PWA standalone mode');
+                document.body.classList.add('pwa-standalone');
+                
+                // Prevent page refresh gesture on mobile
+                document.body.addEventListener('touchstart', e => {
+                    if (e.touches.length > 1) {
+                        e.preventDefault();
+                    }
+                });
+                
+                let lastTouchEnd = 0;
+                document.body.addEventListener('touchend', e => {
+                    const now = (new Date()).getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        e.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+                
+                // Add haptic feedback for button interactions
+                document.querySelectorAll('button, .tool-card').forEach(element => {
+                    element.addEventListener('click', () => {
+                        if (navigator.vibrate) {
+                            navigator.vibrate(10);
+                        }
+                    });
+                });
+            }
             
             // Template switching functionality
             let isETASVTemplate = true;
