@@ -74,12 +74,57 @@
                 display: none;
             }
         }
+        
+        /* Fixed header styles for app-like experience */
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            /* Extend past notch/safe area */
+            padding-top: env(safe-area-inset-top);
+            margin-top: calc(-1 * env(safe-area-inset-top));
+        }
+        
+        /* Header content container with proper safe area padding */
+        .header-content {
+            padding-top: env(safe-area-inset-top);
+        }
+        
+        /* Add padding to body to account for fixed header */
+        .main-content {
+            padding-top: calc(140px + env(safe-area-inset-top)); /* Header height + safe area */
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding-top: calc(120px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+            }
+        }
+        
+        /* PWA-specific enhancements for notched devices */
+        @media (display-mode: standalone) {
+            .fixed-header {
+                /* Ensure header fills entire top area including notch */
+                top: 0;
+                padding-top: env(safe-area-inset-top);
+            }
+            
+            /* Prevent content from appearing in safe areas */
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+            }
+        }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen">
     <!-- Header -->
-    <header class="etasv-gradient-bg text-white">
-        <div class="container mx-auto px-4 py-6">
+    <header class="etasv-gradient-bg text-white fixed-header">
+        <div class="container mx-auto px-4 py-6 header-content">
             <!-- Navigation -->
             <div class="flex items-center justify-between mb-6">
                 <a href="index.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
@@ -102,7 +147,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8 pb-20 md:pb-8">
+    <main class="container mx-auto px-4 py-8 pb-20 md:pb-8 main-content">
         <!-- Course Categories -->
         <section class="mb-12">
             <!-- Solar Training -->

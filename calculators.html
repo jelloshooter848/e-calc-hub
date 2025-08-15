@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrical Calculators - ETASV Training Hub</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="application-name" content="ETASV Training Hub">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ETASV">
+    <meta name="description" content="Professional electrical calculation tools for motor sizing, voltage drop, conduit fill, and more">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1E3A8A">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-192x192.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'etasv-blue': '#1E3A8A',
+                        'etasv-navy': '#1E293B',
+                        'etasv-gray': '#64748B',
+                        'etasv-light': '#F1F5F9'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        .etasv-gradient-bg {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+        }
+        .etasv-icon-bg {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+        }
+        .tool-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .tool-card:hover {
+            transform: translateY(-4px);
+            border-left-color: #3B82F6;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Header -->
+    <header class="etasv-gradient-bg text-white">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between mb-6">
+                <a href="index.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                    <span class="hidden sm:inline">Back to Hub</span>
+                    <span class="sm:hidden">Back</span>
+                </a>
+                <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 bg-white rounded px-2 py-1">
+            </div>
+            <div class="text-center">
+                <h1 class="text-3xl md:text-4xl font-bold mb-3">Electrical Calculators</h1>
+                <p class="text-lg text-blue-100 max-w-2xl mx-auto">
+                    Professional calculation tools for electrical design and installation
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Calculator Tools Section -->
+        <section class="mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-etasv-navy mb-3">NEC-Compliant Calculation Tools</h2>
+                <p class="text-lg text-etasv-gray max-w-2xl mx-auto">
+                    Industry-standard electrical calculators for apprentice training and professional jobsite use
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <!-- Motor Calculator -->
+                <a href="http://ihpcalc.s3-website.us-east-2.amazonaws.com/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">Motor HP Calculator</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Calculate motor horsepower, full-load current, and electrical parameters for motor circuit design and protection.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Voltage Drop Calculator -->
+                <a href="http://egc-voltage-drop.s3-website.us-east-2.amazonaws.com/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M11 7h6v2h-6zm0 4h6v2h-6zm0 4h6v2h-6zM7 7h2v2H7zm0 4h2v2H7zm0 4h2v2H7zM20.1 3H3.9c-.5 0-.9.4-.9.9v16.2c0 .4.4.9.9.9h16.2c.4 0 .9-.5.9-.9V3.9c0-.5-.5-.9-.9-.9zM20 20H4V4h16v16z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">Voltage Drop Calculator</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Calculate voltage drop per NEC Article 210.19(A) and equipment grounding conductor sizing requirements.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Conduit Fill Calculator -->
+                <a href="http://electricalcalculatortest.s3-website.us-east-2.amazonaws.com/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">Conduit Fill & Weight</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Calculate conduit fill percentages per NEC Chapter 9 Table 1 and estimate total installation weight.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Gutter Calculator -->
+                <a href="https://jelloshooter848.github.io/gutter-sizing-calc/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21 8V7l-3 2-3-2v1l3 2 3-2zM7.5 6.5C7.5 5.12 8.62 4 10 4s2.5 1.12 2.5 2.5S11.38 9 10 9 7.5 7.88 7.5 6.5zM16 4c1.38 0 2.5 1.12 2.5 2.5S17.38 9 16 9s-2.5-1.12-2.5-2.5S14.62 4 16 4zM12 12c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">Auxiliary Gutter Sizing</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Size auxiliary gutters and surface wireways per NEC Article 366 conductor fill requirements.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Pull Box Calculator -->
+                <a href="http://pullboxcalc.s3-website.us-east-2.amazonaws.com/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18-.21 0-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18.21 0 .41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">Pull Box Sizing Calculator</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Calculate minimum pull box and junction box dimensions per NEC Article 314.28 requirements.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 3D Pull Box Calculator -->
+                <a href="https://jamesalmeida.github.io/pull-box-sizing-calculator/" 
+                   class="tool-card block bg-white rounded-xl shadow-lg p-6 hover:shadow-xl">
+                    <div class="flex items-start space-x-4">
+                        <div class="etasv-icon-bg rounded-lg p-3 flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-semibold text-etasv-navy mb-2">3D Pull Box Visualization</h3>
+                            <p class="text-etasv-gray text-sm mb-3">
+                                Interactive 3D visualization tool for pull box sizing with NEC Article 314 compliance checking.
+                            </p>
+                            <div class="flex items-center text-etasv-blue text-sm font-medium">
+                                <span>Open Calculator</span>
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Calculator Features Section -->
+        <section class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+            <h2 class="text-2xl font-bold text-etasv-navy mb-6 text-center">Why Use These Calculators?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-2">NEC Compliant</h3>
+                    <p class="text-etasv-gray text-sm">All calculations follow current National Electrical Code standards and requirements</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-2">Training Focused</h3>
+                    <p class="text-etasv-gray text-sm">Designed specifically for apprentice training and educational use</p>
+                </div>
+                
+                <div class="text-center">
+                    <div class="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-etasv-navy mb-2">Mobile Ready</h3>
+                    <p class="text-etasv-gray text-sm">Optimized for mobile devices and jobsite use with offline capability</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-etasv-navy text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center">
+                <div class="flex justify-center items-center mb-4">
+                    <img src="photos/etasv_logo.png" alt="ETASV Logo" class="h-8 mr-3 bg-white rounded p-1">
+                    <span class="text-xl font-semibold">ETASV Training Hub</span>
+                </div>
+                <p class="text-blue-300 mb-2">Electrical Training Alliance of Silicon Valley</p>
+                <p class="text-blue-400 mb-4 text-sm">Professional electrical calculation tools for apprentice training and jobsite use</p>
+                <p class="text-blue-500 text-sm">© 2025 Electrical Training Alliance of Silicon Valley. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
