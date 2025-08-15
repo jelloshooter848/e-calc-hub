@@ -14,7 +14,7 @@ os.makedirs('icons', exist_ok=True)
 def create_icon(size):
     # Load the master ETA icon
     try:
-        master_icon = Image.open('icons/eta-icon-master.png')
+        master_icon = Image.open('icons/eta-icon-master-removebg.png')
         
         # Convert to RGBA if needed for transparency support
         if master_icon.mode != 'RGBA':
@@ -26,7 +26,7 @@ def create_icon(size):
         return resized_icon
         
     except FileNotFoundError:
-        print("Error: eta-icon-master.png not found in icons directory")
+        print("Error: eta-icon-master-removebg.png not found in icons directory")
         return None
     except Exception as e:
         print(f"Error processing icon: {e}")
