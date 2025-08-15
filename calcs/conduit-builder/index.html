@@ -232,13 +232,13 @@
         
         /* Update main content to account for fixed header */
         .main-content {
-            padding-top: calc(120px + env(safe-area-inset-top)) !important;
+            padding-top: calc(90px + env(safe-area-inset-top)) !important;
             padding-bottom: 80px !important;
         }
         
         @media (max-width: 768px) {
             .main-content {
-                padding-top: calc(100px + env(safe-area-inset-top)) !important;
+                padding-top: calc(80px + env(safe-area-inset-top)) !important;
             }
         }
         
@@ -256,8 +256,50 @@
         }
         
         /* Override original header styling */
-        header {
+        .container > header {
             display: none !important;
+        }
+        
+        /* Ensure calculator buttons are visible and maintain original styling */
+        .main-content button {
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+            z-index: 1 !important;
+            /* Restore original button styling from styles.css */
+            background-color: #35424a !important;
+            color: white !important;
+            border: none !important;
+            padding: 10px 20px !important;
+            border-radius: 5px !important;
+            cursor: pointer !important;
+            margin-right: 10px !important;
+        }
+        
+        .main-content button:hover {
+            background-color: #45a049 !important;
+        }
+        
+        /* Ensure form elements are visible */
+        .main-content input, .main-content select, .main-content label {
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+        
+        /* Ensure h2 headers maintain their styling */
+        .main-content h2 {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            font-size: 1.5em !important;
+            font-weight: bold !important;
+            margin: 0.83em 0 !important;
+        }
+        
+        /* Fix any potential overflow issues */
+        .container {
+            overflow: visible !important;
         }
     </style>
 </head>
