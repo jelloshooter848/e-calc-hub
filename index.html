@@ -802,7 +802,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log('ETASV App Hub loaded successfully');
             
-            // Hide loading screen after app is ready
+            // Hide loading screen after app is ready - only show on first visit
+            const isFirstVisit = !localStorage.getItem('visited');
+            const loadingDuration = isFirstVisit ? 1500 : 0;
+            
+            if (isFirstVisit) {
+                localStorage.setItem('visited', 'true');
+            }
+            
             setTimeout(() => {
                 const loadingScreen = document.getElementById('appLoading');
                 if (loadingScreen) {
@@ -811,7 +818,7 @@
                         loadingScreen.style.display = 'none';
                     }, 500);
                 }
-            }, 1500);
+            }, loadingDuration);
             
             // Detect if running in standalone mode (PWA)
             const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
