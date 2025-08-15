@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wire - ETASV Training Hub</title>
+    <title>The Plug Newsletter - ETASV Training Hub</title>
     
     <!-- PWA Meta Tags -->
     <meta name="application-name" content="ETASV Training Hub">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ETASV">
-    <meta name="description" content="Access The Wire forms and documents">
+    <meta name="description" content="Read The Plug newsletter - ETASV's official publication with training updates, industry news, and member highlights">
     <meta name="format-detection" content="telephone=no">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#1E3A8A">
@@ -35,6 +35,10 @@
                         'etasv-navy': '#1E293B',
                         'etasv-gray': '#64748B',
                         'etasv-light': '#F1F5F9'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
                     }
                 }
             }
@@ -42,15 +46,19 @@
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
+        
         .etasv-gradient-bg {
             background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
         }
+        
         .etasv-icon-bg {
             background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
         }
+        
         .mobile-nav {
             position: fixed;
             bottom: 0;
@@ -61,6 +69,7 @@
             border-top: 1px solid #e2e8f0;
             z-index: 50;
         }
+        
         @media (min-width: 768px) {
             .mobile-nav {
                 display: none;
@@ -76,44 +85,132 @@
             z-index: 50;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            /* Extend past notch/safe area */
             padding-top: env(safe-area-inset-top);
             margin-top: calc(-1 * env(safe-area-inset-top));
         }
         
-        /* Header content container with proper safe area padding */
         .header-content {
             padding-top: env(safe-area-inset-top);
         }
         
-        /* Add padding to body to account for fixed header */
         .main-content {
-            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
+            padding-top: calc(100px + env(safe-area-inset-top));
         }
         
         @media (max-width: 768px) {
             .main-content {
-                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+                padding-top: calc(80px + env(safe-area-inset-top));
             }
         }
         
         /* PWA-specific enhancements for notched devices */
         @media (display-mode: standalone) {
             .fixed-header {
-                /* Ensure header fills entire top area including notch */
                 top: 0;
                 padding-top: env(safe-area-inset-top);
             }
             
-            /* Prevent content from appearing in safe areas */
             body {
                 padding-left: env(safe-area-inset-left);
                 padding-right: env(safe-area-inset-right);
             }
         }
         
-        .countdown {
-            font-variant-numeric: tabular-nums;
+        /* Newsletter specific styles */
+        .newsletter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 640px) {
+            .newsletter-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+            }
+        }
+        
+        .newsletter-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .newsletter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .newsletter-cover {
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px) scale(0.95);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        /* Form styles */
+        .form-input {
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            ring-width: 2px;
+            ring-color: #3B82F6;
+            border-color: #3B82F6;
+        }
+        
+        /* Search and filter styles */
+        .filter-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #1E3A8A;
+            color: white;
+        }
+        
+        .newsletter-card.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -133,76 +230,188 @@
             </div>
             
             <div class="text-center">
-                <h1 class="text-2xl md:text-3xl font-bold">The Wire</h1>
+                <h1 class="text-2xl md:text-3xl font-bold">The Plug</h1>
+                <p class="text-blue-100 text-sm mt-1">ETASV Official Newsletter</p>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8 pb-20 md:pb-8 main-content">
-        <!-- Page Description -->
-        <section class="text-center mb-8 mt-16 bg-blue-50 p-6 rounded-lg">
-            <p class="text-xl font-medium text-etasv-navy max-w-2xl mx-auto">
-                Access important forms, documents, and resources from The Wire publication
-            </p>
-        </section>
-        
-        <!-- Embedded The Wire Section -->
-        <section class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
-            <div class="bg-etasv-blue text-white p-4 flex items-center justify-between">
-                <div class="flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-lg p-2 mr-3">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                            <path d="M14 2v6h6"/>
-                            <path d="M16 13H8"/>
-                            <path d="M16 17H8"/>
-                            <path d="M10 9H8"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-semibold">The Wire</h3>
-                        <p class="text-blue-100 text-xs">etasv.org</p>
-                    </div>
-                </div>
-                <button onclick="openExternal()" class="text-blue-100 hover:text-white transition-colors text-sm">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <!-- Embedded iframe -->
-            <div class="relative">
-                <iframe 
-                    id="wireFrame"
-                    src="https://www.etasv.org/copy-of-forms" 
-                    class="w-full border-0"
-                    style="height: calc(100vh - 200px); min-height: 600px;"
-                    sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-                    title="The Wire">
-                </iframe>
-                
-                <!-- Loading overlay -->
-                <div id="loadingOverlay" class="absolute inset-0 bg-white flex items-center justify-center">
-                    <div class="text-center">
-                        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-etasv-blue mx-auto mb-4"></div>
-                        <p class="text-etasv-gray">Loading The Wire...</p>
+        <!-- Hero Section -->
+        <section class="text-center mb-12">
+            <div class="bg-gradient-to-br from-blue-600 to-blue-800 text-white rounded-2xl p-8 mb-8">
+                <div class="max-w-4xl mx-auto">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Stay Connected with The Plug</h2>
+                    <p class="text-xl md:text-2xl text-blue-100 mb-6">
+                        Your source for ETASV training updates, industry news, member highlights, and important announcements
+                    </p>
+                    
+                    <!-- Latest Issue Highlight -->
+                    <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-blur-sm">
+                        <h3 class="text-xl font-semibold mb-4">Latest Issue</h3>
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="w-48 h-64 bg-white bg-opacity-20 rounded-lg flex items-center justify-center">
+                                <img src="newsletter/covers/Cover The Plug May 2025.avif" 
+                                     alt="May 2025 Cover" 
+                                     class="newsletter-cover rounded-lg shadow-lg"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div class="hidden flex-col items-center text-blue-100">
+                                    <svg class="w-12 h-12 mb-2" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                                    </svg>
+                                    <span class="text-sm">May 2025</span>
+                                </div>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="text-2xl font-bold mb-2">May 2025 Edition</h4>
+                                <p class="text-blue-100 mb-4">The latest updates on training programs, industry developments, and member achievements.</p>
+                                <button onclick="openPDF('newsletter/The Plug - May 2025 Edition.pdf')" 
+                                        class="bg-white text-blue-800 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                                    Read Latest Issue
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Info Section -->
-        <section class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-            <div class="flex items-start">
-                <svg class="w-6 h-6 text-blue-600 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"/>
-                </svg>
-                <div>
-                    <h3 class="font-semibold text-blue-900 mb-2">Embedded The Wire</h3>
-                    <p class="text-blue-800 text-sm">
-                        The Wire is embedded within the ETASV app. Use the external link button above if you need to open it in a new window.
+        <!-- Search and Filter Section -->
+        <section class="mb-8">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="flex-1 max-w-md">
+                        <label for="search" class="sr-only">Search newsletters</label>
+                        <div class="relative">
+                            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" 
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                            <input type="text" 
+                                   id="search" 
+                                   placeholder="Search newsletters..." 
+                                   class="form-input w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none">
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 flex-wrap">
+                        <button class="filter-btn active px-4 py-2 rounded-lg border text-sm font-medium" 
+                                data-filter="all">All Issues</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg border text-sm font-medium" 
+                                data-filter="2025">2025</button>
+                        <button class="filter-btn px-4 py-2 rounded-lg border text-sm font-medium" 
+                                data-filter="2024">2024</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Archive Grid -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-etasv-navy mb-6">Newsletter Archive</h2>
+            <div class="newsletter-grid" id="newsletter-grid">
+                <!-- Newsletter cards will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="mb-12">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="max-w-2xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h2 class="text-2xl font-bold text-etasv-navy mb-4">Share Your Feedback</h2>
+                        <p class="text-etasv-gray">
+                            Have suggestions for The Plug? Want to share news or achievements? We'd love to hear from you!
+                        </p>
+                    </div>
+                    
+                    <form id="feedback-form" class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-etasv-navy mb-2">Name *</label>
+                                <input type="text" 
+                                       id="name" 
+                                       required 
+                                       class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-etasv-navy mb-2">Email *</label>
+                                <input type="email" 
+                                       id="email" 
+                                       required 
+                                       class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-etasv-navy mb-2">Subject *</label>
+                            <select id="subject" 
+                                    required 
+                                    class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none">
+                                <option value="">Select a topic...</option>
+                                <option value="general-feedback">General Feedback</option>
+                                <option value="story-suggestion">Story Suggestion</option>
+                                <option value="member-highlight">Member Highlight</option>
+                                <option value="training-update">Training Update</option>
+                                <option value="industry-news">Industry News</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-etasv-navy mb-2">Message *</label>
+                            <textarea id="message" 
+                                      required 
+                                      rows="5" 
+                                      placeholder="Share your thoughts, suggestions, or news..."
+                                      class="form-input w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none"></textarea>
+                        </div>
+                        
+                        <div>
+                            <button type="submit" 
+                                    class="w-full bg-etasv-blue text-white py-3 px-6 rounded-lg font-semibold hover:bg-etasv-navy transition-colors">
+                                Send Feedback
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div id="form-success" class="hidden mt-6 p-4 bg-green-100 border border-green-300 rounded-lg">
+                        <div class="flex items-center">
+                            <svg class="w-5 h-5 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"/>
+                            </svg>
+                            <span class="text-green-800 font-medium">Thank you! Your feedback has been sent successfully.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Subscription Section -->
+        <section class="mb-8">
+            <div class="bg-gradient-to-r from-etasv-blue to-blue-600 text-white rounded-2xl p-8">
+                <div class="max-w-2xl mx-auto text-center">
+                    <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
+                    <p class="text-blue-100 mb-6">
+                        Get notified when new issues of The Plug are released. Never miss important training updates and industry news.
+                    </p>
+                    
+                    <form id="subscription-form" class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                        <input type="email" 
+                               id="subscribe-email" 
+                               placeholder="Enter your email" 
+                               required
+                               class="flex-1 px-4 py-3 rounded-lg text-etasv-navy focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <button type="submit" 
+                                class="bg-white text-etasv-blue px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+                            Subscribe
+                        </button>
+                    </form>
+                    
+                    <p class="text-blue-200 text-sm mt-4">
+                        No spam, just quality content. Unsubscribe anytime.
                     </p>
                 </div>
             </div>
@@ -219,14 +428,10 @@
                 <span class="text-xs">Hub</span>
             </a>
             <button class="flex flex-col items-center text-etasv-blue">
-                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                    <path d="M14 2v6h6"/>
-                    <path d="M16 13H8"/>
-                    <path d="M16 17H8"/>
-                    <path d="M10 9H8"/>
+                <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                 </svg>
-                <span class="text-xs">The Wire</span>
+                <span class="text-xs">Newsletter</span>
             </button>
             <a href="tel:4084531022" class="flex flex-col items-center text-etasv-gray hover:text-etasv-blue transition-colors">
                 <svg class="w-5 h-5 mb-1" fill="currentColor" viewBox="0 0 20 20">
@@ -237,51 +442,340 @@
         </div>
     </nav>
 
+    <!-- PDF Modal -->
+    <div id="pdf-modal" class="modal">
+        <div class="modal-content">
+            <div class="flex items-center justify-between p-4 border-b">
+                <h3 id="modal-title" class="text-lg font-semibold text-etasv-navy">Newsletter</h3>
+                <button onclick="closePDFModal()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="p-4">
+                <iframe id="pdf-viewer" 
+                        src="" 
+                        class="w-full h-96 md:h-[70vh] border-0 rounded"></iframe>
+                <div class="mt-4 flex gap-4">
+                    <a id="download-link" 
+                       href="" 
+                       download 
+                       class="inline-flex items-center bg-etasv-blue text-white px-4 py-2 rounded-lg hover:bg-etasv-navy transition-colors">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('The Wire embedded page loaded');
+        // Newsletter data structure
+        const newsletters = [
+            {
+                title: "May 2025 Edition",
+                date: "2025-05",
+                year: "2025",
+                month: "May",
+                pdf: "newsletter/The Plug - May 2025 Edition.pdf",
+                cover: "newsletter/covers/Cover The Plug May 2025.avif",
+                description: "Latest training updates and industry developments"
+            },
+            {
+                title: "March 2025 Edition", 
+                date: "2025-03",
+                year: "2025",
+                month: "March",
+                pdf: "newsletter/The Plug - March 2025 Edition.pdf",
+                cover: "newsletter/covers/March 2025 Cover.avif",
+                description: "Spring training schedules and member highlights"
+            },
+            {
+                title: "February 2025 Edition",
+                date: "2025-02", 
+                year: "2025",
+                month: "February",
+                pdf: "newsletter/The Plug - February 2025 Edition.pdf",
+                cover: "newsletter/covers/Feb 2025 Cover.avif",
+                description: "New year updates and upcoming opportunities"
+            },
+            {
+                title: "December 2024 Edition",
+                date: "2024-12",
+                year: "2024", 
+                month: "December",
+                pdf: "newsletter/The Plug - December 2024 Edition 2.pdf",
+                cover: "newsletter/covers/December Cover 2024.avif",
+                description: "Year-end wrap-up and holiday message"
+            },
+            {
+                title: "November 2024 Edition",
+                date: "2024-11",
+                year: "2024",
+                month: "November", 
+                pdf: "newsletter/The Plug - November 2024 Edition 2.pdf",
+                cover: "newsletter/covers/November 2024 Cover.avif",
+                description: "Fall training updates and achievements"
+            },
+            {
+                title: "October 2024 Edition",
+                date: "2024-10",
+                year: "2024",
+                month: "October",
+                pdf: "newsletter/The Plug - October 2024 Edition.pdf", 
+                cover: "newsletter/covers/October 2024 The Plug .avif",
+                description: "Industry insights and member spotlights"
+            },
+            {
+                title: "September 2024 Edition",
+                date: "2024-09",
+                year: "2024",
+                month: "September",
+                pdf: "newsletter/The Plug - September 2024 Edition.pdf",
+                cover: "newsletter/covers/September 2024.avif", 
+                description: "Back to school and training opportunities"
+            },
+            {
+                title: "May 2024 Edition",
+                date: "2024-05",
+                year: "2024",
+                month: "May",
+                pdf: "newsletter/The Plug - May 2024 Edition.pdf",
+                cover: "newsletter/covers/May 2024.avif",
+                description: "Spring updates and safety highlights"
+            },
+            {
+                title: "April 2024 Edition", 
+                date: "2024-04",
+                year: "2024",
+                month: "April",
+                pdf: "newsletter/The Plug - April 2024 Edition.pdf",
+                cover: "newsletter/covers/April 2024.avif",
+                description: "Training milestones and industry news"
+            },
+            {
+                title: "March 2024 Edition",
+                date: "2024-03",
+                year: "2024", 
+                month: "March",
+                pdf: "newsletter/The Plug - March 2024 Edition.pdf",
+                cover: "newsletter/covers/March 2024.avif",
+                description: "Spring training schedules and updates"
+            },
+            {
+                title: "February 2024 Edition",
+                date: "2024-02",
+                year: "2024",
+                month: "February", 
+                pdf: "newsletter/The Plug - February 2024 Edition.pdf",
+                cover: "newsletter/covers/February 204.avif",
+                description: "Winter training programs and announcements"
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('The Plug newsletter page loaded');
             
-            // Force scroll to top to ensure description is visible
+            // Force scroll to top
             window.scrollTo(0, 0);
+            setTimeout(() => window.scrollTo(0, 0), 100);
             
-            // Also try after a short delay to override any other scroll behavior
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 100);
+            // Populate newsletter grid
+            populateNewsletterGrid();
             
-            // Handle iframe loading
-            const iframe = document.getElementById('wireFrame');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            
-            iframe.addEventListener('load', () => {
-                console.log('The Wire iframe loaded');
-                setTimeout(() => {
-                    loadingOverlay.style.display = 'none';
-                }, 1000);
-            });
-            
-            // Handle iframe errors (like X-Frame-Options blocking)
-            iframe.addEventListener('error', () => {
-                console.log('The Wire iframe failed to load');
-                loadingOverlay.innerHTML = `
-                    <div class="text-center">
-                        <div class="text-red-500 mb-4">
-                            <svg class="w-12 h-12 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"/>
-                            </svg>
-                        </div>
-                        <p class="text-etasv-gray mb-4">Unable to embed The Wire. The external site prevents embedding.</p>
-                        <button onclick="openExternal()" class="bg-etasv-blue text-white px-6 py-2 rounded-lg hover:bg-etasv-navy transition-colors">
-                            Open in External Window
-                        </button>
-                    </div>
-                `;
-            });
+            // Initialize event listeners
+            initializeEventListeners();
         });
-        
-        function openExternal() {
-            window.open('https://www.etasv.org/copy-of-forms', '_blank');
+
+        function populateNewsletterGrid() {
+            const grid = document.getElementById('newsletter-grid');
+            grid.innerHTML = '';
+            
+            newsletters.forEach((newsletter, index) => {
+                const card = createNewsletterCard(newsletter, index);
+                grid.appendChild(card);
+            });
         }
+
+        function createNewsletterCard(newsletter, index) {
+            const card = document.createElement('div');
+            card.className = 'newsletter-card bg-white rounded-xl shadow-sm overflow-hidden';
+            card.dataset.year = newsletter.year;
+            card.dataset.title = newsletter.title.toLowerCase();
+            
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${newsletter.cover}" 
+                         alt="${newsletter.title} Cover" 
+                         class="newsletter-cover"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden absolute inset-0 bg-gradient-to-br from-etasv-blue to-blue-600 flex-col items-center justify-center text-white">
+                        <svg class="w-16 h-16 mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        </svg>
+                        <span class="text-lg font-semibold">${newsletter.month} ${newsletter.year}</span>
+                    </div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold text-etasv-navy mb-2">${newsletter.title}</h3>
+                    <p class="text-etasv-gray text-sm mb-4">${newsletter.description}</p>
+                    <div class="flex gap-2">
+                        <button onclick="openPDF('${newsletter.pdf}', '${newsletter.title}')" 
+                                class="flex-1 bg-etasv-blue text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-etasv-navy transition-colors">
+                            Read
+                        </button>
+                        <a href="${newsletter.pdf}" 
+                           download 
+                           class="flex items-center justify-center bg-gray-100 text-etasv-gray px-4 py-2 rounded-lg text-sm hover:bg-gray-200 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function initializeEventListeners() {
+            // Search functionality
+            const searchInput = document.getElementById('search');
+            searchInput.addEventListener('input', handleSearch);
+            
+            // Filter buttons
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', handleFilter);
+            });
+            
+            // Forms
+            document.getElementById('feedback-form').addEventListener('submit', handleFeedbackForm);
+            document.getElementById('subscription-form').addEventListener('submit', handleSubscriptionForm);
+            
+            // Modal close on background click
+            document.getElementById('pdf-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePDFModal();
+                }
+            });
+        }
+
+        function handleSearch(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.newsletter-card');
+            
+            cards.forEach(card => {
+                const title = card.dataset.title;
+                const isVisible = title.includes(searchTerm);
+                card.classList.toggle('hidden', !isVisible);
+            });
+        }
+
+        function handleFilter(e) {
+            const filter = e.target.dataset.filter;
+            const cards = document.querySelectorAll('.newsletter-card');
+            
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            // Filter cards
+            cards.forEach(card => {
+                const year = card.dataset.year;
+                const isVisible = filter === 'all' || year === filter;
+                card.classList.toggle('hidden', !isVisible);
+            });
+        }
+
+        function openPDF(pdfPath, title = 'Newsletter') {
+            const modal = document.getElementById('pdf-modal');
+            const viewer = document.getElementById('pdf-viewer');
+            const modalTitle = document.getElementById('modal-title');
+            const downloadLink = document.getElementById('download-link');
+            
+            modalTitle.textContent = title;
+            viewer.src = pdfPath;
+            downloadLink.href = pdfPath;
+            downloadLink.download = title.replace(/\s+/g, '_') + '.pdf';
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePDFModal() {
+            const modal = document.getElementById('pdf-modal');
+            const viewer = document.getElementById('pdf-viewer');
+            
+            modal.classList.remove('active');
+            viewer.src = '';
+            document.body.style.overflow = '';
+        }
+
+        function handleFeedbackForm(e) {
+            e.preventDefault();
+            
+            // Simulate form submission
+            const button = e.target.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Reset form
+                e.target.reset();
+                
+                // Show success message
+                document.getElementById('form-success').classList.remove('hidden');
+                
+                // Reset button
+                button.textContent = originalText;
+                button.disabled = false;
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('form-success').classList.add('hidden');
+                }, 5000);
+            }, 1500);
+        }
+
+        function handleSubscriptionForm(e) {
+            e.preventDefault();
+            
+            const button = e.target.querySelector('button[type="submit"]');
+            const originalText = button.textContent;
+            
+            button.textContent = 'Subscribing...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                // Reset form
+                e.target.reset();
+                
+                // Show success message
+                button.textContent = 'Subscribed!';
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                }, 3000);
+            }, 1500);
+        }
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePDFModal();
+            }
+        });
     </script>
 </body>
 </html>
