@@ -88,14 +88,14 @@
         
         /* Add padding to body to account for fixed header */
         .main-content {
-            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
-            min-height: calc(100vh - 100px);
+            padding-top: calc(120px + env(safe-area-inset-top)) !important; /* Header height + safe area */
+            min-height: calc(100vh - 120px);
             padding-bottom: 80px;
         }
         
         @media (max-width: 768px) {
             .main-content {
-                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+                padding-top: calc(100px + env(safe-area-inset-top)) !important; /* Smaller padding on mobile + safe area */
             }
         }
         

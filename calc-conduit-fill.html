@@ -88,12 +88,12 @@
         
         /* Add padding to body to account for fixed header */
         .main-content {
-            padding-top: calc(100px + env(safe-area-inset-top)); /* Header height + safe area */
+            padding-top: calc(120px + env(safe-area-inset-top)) !important; /* Header height + safe area */
         }
         
         @media (max-width: 768px) {
             .main-content {
-                padding-top: calc(80px + env(safe-area-inset-top)); /* Smaller padding on mobile + safe area */
+                padding-top: calc(100px + env(safe-area-inset-top)) !important; /* Smaller padding on mobile + safe area */
             }
         }
         
