@@ -131,6 +131,37 @@
             .interface-toggle-container {
                 display: none !important;
             }
+            
+            /* Fixed visualization under header on mobile */
+            #simple-canvas-holder {
+                position: fixed !important;
+                top: calc(100px + env(safe-area-inset-top)) !important;
+                left: 0 !important;
+                right: 0 !important;
+                height: 250px !important;
+                z-index: 30 !important;
+                background: white !important;
+                width: 100vw !important;
+                margin: 0 !important;
+                padding: 0.5rem !important;
+            }
+            
+            /* Remove styling from the empty visualization card container on mobile */
+            .mobile-order-1 {
+                background: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            
+            /* Adjust main content to start below fixed visualization */
+            .main-content {
+                padding-top: calc(350px + env(safe-area-inset-top)) !important;
+            }
+            
             #canvas-holder {
                 width: 100vw;
                 /* margin-left: -1rem; */
@@ -428,7 +459,7 @@
 <body class="bg-gray-100 font-mono">
     <!-- Header -->
     <header class="etasv-gradient-bg text-white fixed-header">
-        <div class="container mx-auto px-4 py-4 header-content">
+        <div class="container mx-auto pxstar-4 py-4 header-content">
             <div class="flex items-center justify-between mb-3">
                 <a href="../../calculators.html" class="flex items-center text-blue-100 hover:text-white transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
